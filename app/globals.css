@@ -1,26 +1,127 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Palette */
+  --color-sage: #939e66;
+  --color-sage-deep: #7c8654;
+  --color-taupe: #aeab97;
+  --color-cream: #dbd5c1;
+  --color-paper: #f6f4ed;
+  --color-paper-deep: #efe9dc;
+  --color-forest: #3e4f3c;
+  --color-forest-deep: #2c382a;
+
+  /* Fonts */
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  /* Easing */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #f6f4ed;
+  --foreground: #3e4f3c;
+}
+
+* {
+  border-color: color-mix(in srgb, var(--color-forest) 12%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hero script names */
+.font-display {
+  font-family: var(--font-display), cursive;
+}
+
+/* Labels, nav, accents */
+.font-serif {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+/* Section headings — high-contrast wedding display */
+.font-heading {
+  font-family: var(--font-heading), "Times New Roman", serif;
+  font-weight: 500;
+  font-feature-settings: "liga" 1, "kern" 1;
+  letter-spacing: 0.015em;
+}
+
+/* Body copy — refined invitation serif */
+.font-body {
+  font-family: var(--font-body), Georgia, serif;
+  font-feature-settings: "liga" 1, "kern" 1;
+  line-height: 1.75;
+}
+
+/* Small caps tracking label */
+.label {
+  font-family: var(--font-serif), serif;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in srgb, var(--color-sage) 45%, transparent);
+  color: var(--color-forest-deep);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-sage) 70%, var(--color-forest));
+  border-radius: 999px;
+  border: 2px solid var(--color-paper-deep);
+}
+
+/* Hide scrollbar utility for horizontal strips */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Legibility on photo backgrounds */
+.text-shadow-hero {
+  text-shadow:
+    0 1px 2px rgba(44, 56, 42, 0.55),
+    0 2px 16px rgba(44, 56, 42, 0.4);
+}
+
+/* Subtle grain overlay */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
