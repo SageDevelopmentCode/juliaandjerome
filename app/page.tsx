@@ -3,8 +3,8 @@ import Nav from "@/app/components/Nav";
 import Hero from "@/app/components/Hero";
 import Story from "@/app/components/Story";
 import Countdown from "@/app/components/Countdown";
-import Schedule from "@/app/components/Schedule";
-import Venue from "@/app/components/Venue";
+import WelcomeDinner from "@/app/components/WelcomeDinner";
+import WeddingDay from "@/app/components/WeddingDay";
 import Travel from "@/app/components/Travel";
 import Gallery from "@/app/components/Gallery";
 import Details from "@/app/components/Details";
@@ -22,8 +22,8 @@ export default function Home() {
         <Hero />
         <Story />
         <Countdown />
-        <Schedule />
-        <Venue />
+        <WelcomeDinner />
+        <WeddingDay />
         <Travel />
         <Gallery />
         <Details />

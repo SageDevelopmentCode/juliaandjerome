@@ -34,13 +34,13 @@ export default function Nav() {
       >
         <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-10">
           {/* Left: desktop links */}
-          <div className="hidden flex-1 items-center gap-8 md:flex">
+          <div className="hidden flex-1 items-center gap-6 md:flex">
             {nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "font-serif text-xs font-medium uppercase tracking-[0.2em] transition-colors",
+                  "whitespace-nowrap font-serif text-xs font-medium uppercase tracking-[0.15em] transition-colors",
                   solid
                     ? "text-forest/70 hover:text-forest"
                     : "text-shadow-hero text-cream hover:text-paper"
@@ -73,7 +73,7 @@ export default function Nav() {
             <a
               href="#rsvp"
               className={cn(
-                "hidden rounded-full px-7 py-2.5 font-serif text-xs font-medium uppercase tracking-[0.2em] transition-all duration-300 md:inline-block",
+                "inline-block rounded-full px-4 py-2 font-serif text-[0.65rem] font-medium uppercase tracking-[0.15em] transition-all duration-300 md:px-7 md:py-2.5 md:text-xs md:tracking-[0.2em]",
                 solid
                   ? "border border-forest/30 bg-forest text-paper shadow-sm hover:bg-forest-deep"
                   : "bg-cream text-forest shadow-[0_2px_12px_rgba(44,56,42,0.35)] hover:bg-paper hover:shadow-[0_4px_16px_rgba(44,56,42,0.4)]"
@@ -129,16 +129,6 @@ export default function Nav() {
                 {item.label}
               </motion.a>
             ))}
-            <motion.a
-              href="#rsvp"
-              onClick={() => setMenuOpen(false)}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + nav.length * 0.08, ease: EASE_SOFT }}
-              className="mt-4 rounded-full bg-forest px-9 py-3 font-serif text-sm uppercase tracking-[0.2em] text-paper"
-            >
-              RSVP
-            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>

@@ -22,7 +22,7 @@ export default function Closing() {
       <motion.div style={{ y }} className="absolute inset-[-12%]">
         <Image
           src={closing.image}
-          alt={`${couple.combined} dancing by the ocean`}
+          alt={`${couple.combined} embracing on a balcony`}
           fill
           sizes="100vw"
           className="object-cover object-center"

@@ -1,27 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn, viewportOnce, EASE_SOFT } from "@/lib/utils";
 import { couple, event } from "@/app/data/content";
+import { submitRsvp } from "@/app/actions/rsvp";
 
 const schema = z
   .object({
     name: z.string().min(2, "Please enter your full name"),
     email: z.string().email("Please enter a valid email"),
+    passportExpiresBefore2028: z.enum(["yes", "no"], {
+      message: "Please let us know about your passport",
+    }),
     attending: z.enum(["yes", "maybe", "no"]),
-    party: z.number().min(1).max(20),
     address: z.string().optional(),
-    passport: z.enum(["yes", "no"]),
-    passportExpiry: z.enum(["yes", "no"]).optional(),
     note: z.string().optional(),
   })
-  .refine((d) => d.passport === "no" || !!d.passportExpiry, {
-    message: "Please let us know if it expires before December 2027",
-    path: ["passportExpiry"],
-  });
+  .refine(
+    (d) =>
+      d.attending === "no" ||
+      (d.address !== undefined && d.address.trim().length >= 5),
+    {
+      message: "Please enter your mailing address",
+      path: ["address"],
+    }
+  );
 
 type FormValues = z.infer<typeof schema>;
 
@@ -80,6 +87,8 @@ function PillGroup({
 }
 
 export default function Rsvp() {
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -88,16 +97,18 @@ export default function Rsvp() {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { attending: "yes", party: 1, passport: "yes" },
+    defaultValues: { attending: "yes" },
   });
 
   const attending = watch("attending");
-  const passport = watch("passport");
-  const passportExpiry = watch("passportExpiry");
+  const passportExpiresBefore2028 = watch("passportExpiresBefore2028");
 
-  async function onSubmit(_data: FormValues) {
-    // Placeholder submit — wire up to a backend / form service later.
-    await new Promise((r) => setTimeout(r, 900));
+  async function onSubmit(data: FormValues) {
+    setSubmitError(null);
+    const result = await submitRsvp(data);
+    if (!result.success) {
+      setSubmitError(result.error);
+    }
   }
 
   return (
@@ -134,20 +145,37 @@ export default function Rsvp() {
               transition={{ duration: 0.7, ease: EASE_SOFT }}
               className="rounded-[2px] border border-sage/40 bg-paper p-10 text-center md:p-12"
             >
-              <h3 className="font-heading text-4xl italic text-forest md:text-5xl">Thank You</h3>
+              <h3 className="font-heading text-4xl italic text-forest md:text-5xl">
+                Thank You
+              </h3>
               <p className="mt-4 text-forest/70">
                 Your early response has been received. We cannot wait to
                 celebrate with you in Lake Como.
               </p>
 
-              <div className="mx-auto mt-8 max-w-sm space-y-3 text-left">
+              <div className="mx-auto mt-8 max-w-md space-y-4 text-left">
                 <p className="font-serif text-xs uppercase tracking-[0.25em] text-sage-deep">
-                  Before you go
+                  Before you go — a few reminders
                 </p>
-                <ul className="space-y-2 text-sm text-forest/70">
-                  <li>• Double-check your passport&apos;s expiration date.</li>
-                  <li>• Start watching flights into Milan for 2027.</li>
-                  <li>• Add the wedding weekend to your calendar.</li>
+                <ul className="space-y-4 text-sm leading-relaxed text-forest/70">
+                  <li>
+                    <span className="font-serif text-forest">Check your passport.</span>{" "}
+                    Confirm it won&apos;t expire before January 2028 and remains
+                    valid for at least 3 months after you leave Italy.
+                  </li>
+                  <li>
+                    <span className="font-serif text-forest">Start watching flights.</span>{" "}
+                    Milan Malpensa (MXP) and Milan Linate (LIN) are your best
+                    options — we recommend beginning your search in January or
+                    February 2027.
+                  </li>
+                  <li>
+                    <span className="font-serif text-forest">
+                      Sign up for calendar alerts.
+                    </span>{" "}
+                    Add the wedding weekend to your calendar now so you
+                    don&apos;t miss any updates as plans come together.
+                  </li>
                 </ul>
               </div>
 
@@ -217,11 +245,41 @@ export default function Rsvp() {
 
               <div>
                 <span className={labelBase}>
-                  Do you think you can make it?
+                  Do you have a passport that will expire before January 2028?
+                </span>
+                <p className="mt-2 text-sm leading-relaxed text-forest/55">
+                  Your passport must be valid for at least 3 months beyond the
+                  date you plan to leave Italy.
+                </p>
+                <PillGroup
+                  options={[
+                    { value: "no", label: "No, I'm good" },
+                    { value: "yes", label: "Yes, it will" },
+                  ]}
+                  value={passportExpiresBefore2028}
+                  register={register("passportExpiresBefore2028")}
+                />
+                {errors.passportExpiresBefore2028 && (
+                  <p className="mt-2 text-xs text-sage-deep">
+                    {errors.passportExpiresBefore2028.message}
+                  </p>
+                )}
+                {passportExpiresBefore2028 === "yes" && (
+                  <p className="mt-3 rounded-[2px] bg-cream/50 px-4 py-3 text-sm text-forest/75">
+                    Please renew your passport soon — processing can take
+                    several weeks, and you&apos;ll want it valid well beyond the
+                    trip.
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <span className={labelBase}>
+                  Will you and the guest (invited) attend?
                 </span>
                 <PillGroup
                   options={[
-                    { value: "yes", label: "Yes, count me in" },
+                    { value: "yes", label: "Yes, count us in" },
                     { value: "maybe", label: "Not sure yet" },
                     { value: "no", label: "Sadly, no" },
                   ]}
@@ -237,92 +295,24 @@ export default function Rsvp() {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.5, ease: EASE_SOFT }}
-                    className="space-y-9 overflow-hidden"
+                    className="overflow-hidden"
                   >
-                    <div>
-                      <label className={labelBase} htmlFor="party">
-                        How many in your party (including you)?
-                      </label>
-                      <input
-                        id="party"
-                        type="number"
-                        min={1}
-                        max={20}
-                        {...register("party", { valueAsNumber: true })}
-                        className={cn(fieldBase, "mt-3")}
-                      />
-                    </div>
-
-                    <div>
-                      <label className={labelBase} htmlFor="address">
-                        Mailing Address
-                      </label>
-                      <p className="mt-1 text-xs text-forest/45">
-                        So we can send your formal invitation.
-                      </p>
-                      <textarea
-                        id="address"
-                        rows={2}
-                        {...register("address")}
-                        className={cn(fieldBase, "mt-3 resize-none")}
-                        placeholder="Street, City, State/Province, Postal Code, Country"
-                      />
-                    </div>
-
-                    <div>
-                      <span className={labelBase}>
-                        Do you have a valid passport?
-                      </span>
-                      <PillGroup
-                        options={[
-                          { value: "yes", label: "Yes" },
-                          { value: "no", label: "Not yet" },
-                        ]}
-                        value={passport}
-                        register={register("passport")}
-                      />
-                    </div>
-
-                    <AnimatePresence initial={false}>
-                      {passport === "yes" && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.45, ease: EASE_SOFT }}
-                          className="overflow-hidden"
-                        >
-                          <span className={labelBase}>
-                            Will it expire before December 2027?
-                          </span>
-                          <PillGroup
-                            options={[
-                              { value: "no", label: "No, I'm good" },
-                              { value: "yes", label: "Yes, it will" },
-                            ]}
-                            value={passportExpiry}
-                            register={register("passportExpiry")}
-                          />
-                          {errors.passportExpiry && (
-                            <p className="mt-2 text-xs text-sage-deep">
-                              {errors.passportExpiry.message}
-                            </p>
-                          )}
-                          {passportExpiry === "yes" && (
-                            <p className="mt-3 rounded-[2px] bg-cream/50 px-4 py-3 text-sm text-forest/75">
-                              Please renew your passport soon — processing can
-                              take several weeks, and you&apos;ll want it valid
-                              well beyond the trip.
-                            </p>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {passport === "no" && (
-                      <p className="rounded-[2px] bg-cream/50 px-4 py-3 text-sm text-forest/75">
-                        You&apos;ll need a passport to join us in Italy. We
-                        recommend applying as early as possible.
+                    <label className={labelBase} htmlFor="address">
+                      What is your address?
+                    </label>
+                    <p className="mt-1 text-xs text-forest/45">
+                      So we can send your formal invitation.
+                    </p>
+                    <textarea
+                      id="address"
+                      rows={2}
+                      {...register("address")}
+                      className={cn(fieldBase, "mt-3 resize-none")}
+                      placeholder="Street, City, State/Province, Postal Code, Country"
+                    />
+                    {errors.address && (
+                      <p className="mt-2 text-xs text-sage-deep">
+                        {errors.address.message}
                       </p>
                     )}
                   </motion.div>
@@ -341,6 +331,12 @@ export default function Rsvp() {
                   placeholder="Send your love..."
                 />
               </div>
+
+              {submitError && (
+                <p className="text-center text-sm text-sage-deep">
+                  {submitError}
+                </p>
+              )}
 
               <button
                 type="submit"
