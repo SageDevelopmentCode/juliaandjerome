@@ -1,52 +1,44 @@
 import type { Metadata } from "next";
-import {
-  Pinyon_Script,
-  Cormorant_Garamond,
-  Playfair_Display,
-  EB_Garamond,
-} from "next/font/google";
+import { Caveat, Instrument_Serif, Pinyon_Script, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
-const pinyon = Pinyon_Script({
+// Stand-in for Burgues Script. To use the real font, drop the file in app/fonts/ and replace with:
+// localFont({ src: "./fonts/BurguesScript.woff2", variable: "--font-script", display: "swap" })
+const script = Pinyon_Script({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const display = Instrument_Serif({
   variable: "--font-display",
   subsets: ["latin"],
   weight: "400",
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-serif",
+const mono = Roboto_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-heading",
+const hand = Caveat({
+  variable: "--font-hand",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-const ebGaramond = EB_Garamond({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Julia & Jerome — We're Getting Married",
+  title: "Julia & Jerome — Lake Como, October 6, 2027",
   description:
-    "Join us as we celebrate the wedding of Julia & Jerome. Our story, the details, and how to RSVP.",
+    "The wedding of Julia & Jerome at Relais Villa Vittoria, Lake Como. Schedule, travel, dress code, and RSVP.",
   openGraph: {
-    title: "Julia & Jerome — We're Getting Married",
-    description:
-      "Join us as we celebrate the wedding of Julia & Jerome.",
+    title: "Julia & Jerome — Lake Como, October 6, 2027",
+    description: "The wedding of Julia & Jerome at Relais Villa Vittoria, Lake Como.",
     type: "website",
+    images: ["/assets/web/hero-boat.jpg"],
   },
 };
 
@@ -58,11 +50,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${pinyon.variable} ${cormorant.variable} ${playfair.variable} ${ebGaramond.variable} antialiased`}
+      className={`${script.variable} ${display.variable} ${mono.variable} ${hand.variable} antialiased`}
     >
-      <body className="min-h-full bg-paper text-forest font-body">
-        {children}
-      </body>
+      <body className="min-h-full bg-sand font-mono text-cocoa">{children}</body>
     </html>
   );
 }

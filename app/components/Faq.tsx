@@ -1,94 +1,41 @@
-"use client";
+import Reveal from "@/app/components/Reveal";
+import { faq, type FaqItem } from "@/app/data/content";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { viewportOnce, EASE_SOFT } from "@/lib/utils";
-import { faq, event } from "@/app/data/content";
-
-function Item({
-  q,
-  a,
-  isOpen,
-  onToggle,
-}: {
-  q: string;
-  a: string;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
+function Item({ item }: { item: FaqItem }) {
   return (
-    <div className="border-b border-forest/10">
-      <button
-        onClick={onToggle}
-        className="group flex w-full items-center justify-between gap-6 py-6 text-left"
-      >
-        <span className="font-serif text-lg text-forest md:text-xl">{q}</span>
-        <span className="relative flex h-6 w-6 flex-none items-center justify-center">
-          <span className="absolute h-px w-3.5 bg-sage-deep" />
-          <motion.span
-            animate={{ rotate: isOpen ? 0 : 90 }}
-            transition={{ duration: 0.4, ease: EASE_SOFT }}
-            className="absolute h-px w-3.5 bg-sage-deep"
-          />
-        </span>
-      </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: EASE_SOFT }}
-            className="overflow-hidden"
-          >
-            <p className="max-w-2xl pb-7 leading-relaxed text-forest/70">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="text-center">
+      <h3 className="font-mono text-[1.15rem] font-medium leading-tight md:text-[1.35rem]">{item.q}</h3>
+      <p className="mt-2 font-mono text-[0.78rem] leading-relaxed md:text-[0.82rem]">{item.a}</p>
     </div>
   );
 }
 
 export default function Faq() {
-  const [open, setOpen] = useState<number | null>(0);
-
   return (
-    <section id="faq" className="relative bg-paper py-28 md:py-36">
-      <div className="mx-auto max-w-3xl px-5 md:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={viewportOnce}
-          transition={{ duration: 1, ease: EASE_SOFT }}
-          className="mb-14 text-center"
-        >
-          <span className="label text-sage-deep">questions &amp; answers</span>
-          <h2 className="font-heading mt-4 text-5xl text-forest md:text-6xl">
-            Good to Know
+    <section id="faq" className="scroll-mt-16 bg-sand text-cocoa">
+      <div className="mx-auto max-w-6xl px-5 pb-20 pt-16 md:px-12 md:pt-20">
+        <Reveal>
+          <h2 className="font-display mx-auto w-fit border-b-[3px] border-cocoa pb-0.5 text-[clamp(3rem,5.8vw,4.4rem)] leading-[0.85]">
+            FAQs
           </h2>
-        </motion.div>
+        </Reveal>
 
-        <div>
-          {faq.map((item, i) => (
-            <Item
-              key={item.q}
-              q={item.q}
-              a={item.a}
-              isOpen={open === i}
-              onToggle={() => setOpen(open === i ? null : i)}
-            />
-          ))}
+        <div className="mt-12 grid gap-12 md:mt-14 md:grid-cols-2 md:gap-14">
+          <div className="space-y-10 md:space-y-9">
+            {faq.left.map((item, i) => (
+              <Reveal key={item.q} delay={i * 0.05}>
+                <Item item={item} />
+              </Reveal>
+            ))}
+          </div>
+          <div className="space-y-10 md:space-y-16 md:pt-5">
+            {faq.right.map((item, i) => (
+              <Reveal key={item.q} delay={0.1 + i * 0.05}>
+                <Item item={item} />
+              </Reveal>
+            ))}
+          </div>
         </div>
-
-        <p className="mt-12 text-center text-forest/60">
-          Still have a question? Reach out at{" "}
-          <a
-            href={`mailto:${event.contactEmail}`}
-            className="text-sage-deep underline-offset-4 hover:underline"
-          >
-            {event.contactEmail}
-          </a>
-        </p>
       </div>
     </section>
   );

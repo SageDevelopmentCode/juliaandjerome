@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { signIn } from "@/app/actions/auth";
 
 const fieldBase =
-  "w-full border-0 border-b border-forest/20 bg-transparent pb-2 pt-1 text-forest placeholder:text-forest/35 focus:border-sage focus:outline-none transition-colors";
+  "w-full border-0 border-b border-cocoa/25 bg-transparent pb-2 pt-1 font-mono text-cocoa placeholder:text-cocoa/35 focus:border-cocoa focus:outline-none transition-colors";
 const labelBase =
-  "font-serif text-xs uppercase tracking-[0.25em] text-forest/55";
+  "font-mono text-xs uppercase tracking-[0.2em] text-cocoa/60";
 
 function EyeIcon() {
   return (
@@ -85,9 +85,9 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center px-5">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
-          <span className="label text-sage-deep">admin</span>
-          <h1 className="font-heading mt-4 text-4xl text-forest">RSVP Portal</h1>
-          <p className="mt-3 text-sm text-forest/60">
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-cocoa/60">admin</span>
+          <h1 className="font-display mt-4 text-5xl text-cocoa">RSVP Portal</h1>
+          <p className="mt-3 font-mono text-sm text-cocoa/70">
             Sign in to view submissions.
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function AdminLoginPage() {
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-0 bottom-2 text-forest/40 transition-colors hover:text-forest/70"
+                className="absolute right-0 bottom-2 text-cocoa/40 transition-colors hover:text-cocoa/70"
               >
                 {showPassword ? <EyeOffIcon /> : <EyeIcon />}
               </button>
@@ -130,13 +130,13 @@ export default function AdminLoginPage() {
           </div>
 
           {error && (
-            <p className="text-center text-sm text-sage-deep">{error}</p>
+            <p className="text-center font-mono text-sm text-cocoa">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-full bg-forest py-4 font-serif text-xs uppercase tracking-[0.3em] text-paper transition-colors duration-300 hover:bg-forest-deep disabled:opacity-60"
+            className="w-full bg-olive py-4 font-mono text-xs uppercase tracking-[0.25em] text-ivory transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {isSubmitting ? "Signing in..." : "Sign In"}
           </button>

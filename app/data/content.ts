@@ -1,393 +1,407 @@
 /**
  * Centralized content for the wedding site.
  * Swap copy, dates, and image filenames here without touching components.
- * Items marked PLACEHOLDER still need real details.
+ * Items marked CONFIRM follow the move to October 6 and still need a final check.
+ * Items marked PLACEHOLDER point at images that haven't been added yet; drop the file into
+ * source-assets/v2, run `npm run assets`, or save it straight to public/assets/web/ with that name.
  */
 
-const img = (name: string) => `/assets/optimized/${name}.jpg`;
-const elopement = (id: string) => `/assets/optimized/elopement-${id}.jpg`;
+const web = (name: string) => `/assets/web/${name}`;
 
 export const couple = {
   first: "Julia",
   second: "Jerome",
   combined: "Julia & Jerome",
-  initials: "J & J",
-  hashtag: "#JuliaAndJerome",
+  signature: "Julia and Jerome",
 };
 
 export const event = {
-  /** ISO timestamp used by the countdown (Lake Como is CEST / UTC+2 in early October). */
-  dateISO: "2027-10-05T15:30:00+02:00",
-  dateLong: "Tuesday, October 5, 2027",
-  dateShort: "October 5, 2027",
-  // PLACEHOLDER: confirm the real soft-RSVP / poll deadline.
-  rsvpBy: "January 31, 2027",
+  /** Lake Como is CEST (UTC+2) in early October. */
+  dateISO: "2027-10-06T15:00:00+02:00",
+  dateLong: "Wednesday, October 6, 2027",
   venueName: "Relais Villa Vittoria",
-  venueCity: "Lake Como, Italy",
-  venueAddress: "Via Vecchia Regina 62, Laglio, Lake Como 22010, Italy",
-  mapQuery: "Relais Villa Vittoria Via Vecchia Regina 62 Laglio Lake Como Italy",
-  airports: "Milan Malpensa (MXP) or Milan Linate (LIN)",
-  // PLACEHOLDER: confirm contact email.
-  contactEmail: "hello@juliaandjerome.com",
+  venueCity: "Laglio, Lake Como, Italy",
+  // CONFIRM: swap for the villa's own site if you'd rather link there.
+  venueUrl: "https://www.google.com/search?q=Relais+Villa+Vittoria+Laglio+Lake+Como",
+};
+
+export const images = {
+  monogram: web("monogram.png"),
+  villaSketch: web("villa-sketch.svg"),
+  hero: web("hero-boat.jpg"),
+  inviteBg: web("invite-lake.jpg"),
+  video: web("super8.mp4"),
+  videoPoster: web("super8-poster.jpg"),
+  welcomeParty: web("welcome-party.jpg"),
+  timelineBg: web("timeline-bg.jpg"),
+  dressGirlsBg: web("dress-girls-bg.jpg"),
+  dressGuysBg: web("dress-guys-bg.jpg"),
+  villaFront: web("villa-front.jpg"),
+  villaAerial: web("villa-aerial.jpg"),
+  italyMap: web("map-italy.svg"),
+  europeMap: web("map-europe.svg"),
+  // PLACEHOLDER: yellow-wall kiss photo behind the itinerary.
+  itineraryBg: web("itinerary-bg.jpg"),
+  presence: web("presence-stairs.jpg"),
+  rsvpPhoto: web("rsvp-boat.jpg"),
+};
+
+export const nav = {
+  left: [
+    { label: "Welcome Party", href: "#welcome-party" },
+    { label: "Wedding", href: "#wedding" },
+  ],
+  right: [
+    { label: "Travel", href: "#travel" },
+    { label: "RSVP", href: "#rsvp" },
+    { label: "FAQ", href: "#faq" },
+  ],
 };
 
 export const hero = {
-  image: img("728A8239"),
-  invite: "you're cordially invited to celebrate the story of",
+  eyebrow: "The wedding of",
+  date: { month: "October the 6", suffix: "th", year: ", 2027" },
 };
 
-export type StoryChapter = {
-  eyebrow: string;
-  title: string;
-  body: string[];
-  image: string;
-  caption: string;
+export const invitation = {
+  title: "You are invited",
+  body: [
+    "We know that joining us for our wedding is more than simply marking a date in the calendar. It means making the journey, taking time away, and arranging your plans around the celebration.",
+    "We’ve created this space to share the details you’ll need as the date approaches, from the venue and RSVP to the schedule and travel information.",
+    "More than anything, we look forward to bringing together the people who mean the most to us.",
+  ],
+  signoff: "With love,",
 };
 
-export const story: StoryChapter[] = [
-  {
-    eyebrow: "chapter one",
-    title: "The Swipe That Started It All",
-    body: [
-      "Like many modern love stories, ours began with a swipe on a dating app. At the time, we were both navigating the challenges of pre-nursing school, focused on our futures and completely unaware that we were about to meet the person who would change everything.",
-    ],
-    image: elopement("7319"),
-    caption: "Where it all began",
-  },
-  {
-    eyebrow: "chapter two",
-    title: "Cheesecake Factory & Endless Conversations",
-    body: [
-      "Our first date was at Cheesecake Factory, and what was supposed to be a simple dinner quickly became the beginning of something special. From that day on, we never stopped talking. We spent countless hours together, learning about each other, sharing dreams, and becoming best friends.",
-      "Some of our favorite memories are the simplest ones — staying up late talking for hours about everything and nothing, completely losing track of time. Long before we fell asleep beside each other, we were falling in love through endless conversations.",
-    ],
-    image: elopement("7398"),
-    caption: "A love that grew",
-  },
-  {
-    eyebrow: "chapter three",
-    title: "The Surprise of a Lifetime",
-    body: [
-      "Years later, he planned a trip to Hawaii that would become one of the most unforgettable adventures of our lives. What I didn't know was that he had been carrying a secret the entire time. To make things even more memorable, our trip took an unexpected turn when we found ourselves going through a tsunami evacuation and taking shelter at a local middle school. After that, a proposal was the last thing on my mind.",
-      "A few days later, we had what I thought was simply a private beach photoshoot at Tunnels Beach. As we stood together in one of the most beautiful places we'd ever seen, he suddenly got down on one knee and asked me to marry him. Completely surprised and overwhelmed with happiness, I said yes. It was the perfect beginning to our next chapter, and we can't wait to celebrate it with all of you.",
-    ],
-    image: elopement("7371"),
-    caption: "The beginning of forever",
-  },
+export const whyComo = {
+  title: ["Why", "Lake Como?"],
+  body: [
+    "Last August, we spent some time in Lake Como.",
+    "These are a few photographs from that trip, and what made us want to return.",
+  ],
+  emphasis: "This time, with all of you.",
+  photos: [
+    { src: web("como-strip-1.jpg"), alt: "Julia looking out over the lake from a terrace" },
+    { src: web("como-strip-2.jpg"), alt: "Pasta and spritzes at a lakeside lunch" },
+    { src: web("como-strip-3.jpg"), alt: "Julia and Jerome by the water" },
+    { src: web("como-strip-4.jpg"), alt: "Breakfast overlooking Varenna" },
+    { src: web("como-strip-5.jpg"), alt: "Walking the narrow streets of a lakeside village" },
+    { src: web("como-strip-6.jpg"), alt: "Jerome by an infinity pool above the lake" },
+  ],
+};
+
+export const welcomeParty = {
+  title: ["Welcome", "Party"],
+  rows: [
+    // CONFIRM: moved from Monday October 4 with the wedding's move to October 6.
+    { label: "Date:", value: ["Tuesday October 5, 2027", "at 7:30PM"] },
+    { label: "Location:", value: ["Relais Villa Vittoria,", "Laglio, Lake Como, Italy"] },
+    { label: "Theme:", value: ["A relaxed dinner by the pool with pizza and gelato"] },
+  ],
+};
+
+export type TimelineItem = { time: string; label: string };
+
+export const timeline: TimelineItem[] = [
+  { time: "3:00PM", label: "Ceremony and “I do’s”" },
+  { time: "4:00PM", label: "Cocktail Hour" },
+  { time: "5:45PM", label: "Reception Dinner and Dancing in an underground cave!" },
+  { time: "12:00AM", label: "Celebration ends." },
+  { time: "~9:00AM", label: "Farewell Breakfast together." },
 ];
 
-export type GalleryItem = { src: string; alt: string };
-
-export const gallery: GalleryItem[] = [
-  { src: img("728A7660"), alt: "Holding each other at golden hour" },
-  { src: img("728A8001"), alt: "Walking along the shoreline" },
-  { src: img("728A7711"), alt: "A quiet moment together" },
-  { src: img("728A8068"), alt: "Laughing in the light" },
-  { src: img("728A7803"), alt: "Side by side" },
-  { src: img("728A8530"), alt: "Toward the sea" },
-  { src: img("728A7863"), alt: "An embrace in the palms" },
-  { src: img("728A8400"), alt: "Soft evening glow" },
-  { src: img("728A7988"), alt: "Hand in hand" },
-  { src: img("728A8740"), alt: "The two of us" },
-  { src: img("728A7922"), alt: "A shared smile" },
-  { src: img("728A8919"), alt: "As the sun goes down" },
-  { src: elopement("7118"), alt: "Laughing as he carries her" },
-  { src: elopement("7298"), alt: "A quiet moment in the trees" },
-  { src: elopement("7330"), alt: "Garden light on lace and flowers" },
-  { src: elopement("7343"), alt: "Playful and in love" },
-  { src: elopement("7350"), alt: "Dinner for two" },
-  { src: elopement("7366"), alt: "Lace parasol in the garden" },
-  { src: elopement("7378"), alt: "Dressed for the day" },
-  { src: elopement("7323"), alt: "Together among the roses" },
-];
-
-export const welcomeDinner = {
-  date: "Monday, October 4, 2027",
-  time: "7:30 PM",
-  venueName: "Relais Villa Vittoria",
-  address: "Via Vecchia Regina 62, Laglio, Lake Como 22010, Italy",
-  mapQuery: "Relais Villa Vittoria Via Vecchia Regina 62 Laglio Lake Como Italy",
-  lat: 45.8768,
-  lng: 9.1334,
-  intro:
-    "Come join us the day before for a relaxed dinner by the pool with pizza and sorbet — a casual first hello to everyone who made the trip.",
+export const transport = {
+  flights: {
+    title: "Flights",
+    route: "LAX to MXP (Milan)",
+    bullets: [
+      "Most flights to MXP require a stopover.",
+      "Recommended to start looking and book flights as early as November!",
+    ],
+    tip: "TIP: We recommend Lufthansa Airlines. Our stopover was in Frankfurt, Germany for 2 hours and food and experience was amazing!",
+  },
+  shuttle: {
+    title: "Shuttle",
+    // CONFIRM: shuttle date moved from October 4 to October 5.
+    body: [
+      { text: "A shuttle will be provided from Milan to Lake Como " },
+      { text: "by us", bold: true },
+      { text: " — about a 30-minute ride to Relais Villa Vittoria on " },
+      { text: "October 5", bold: true },
+      { text: ". Pick-up details will be shared closer to the date." },
+    ],
+    tip: "TIP: One thing no one warned us on how difficult transportation is to get in or around Lake Como. So keep that in mind when planning!",
+  },
 };
 
-export type WeddingDayEvent = {
+/** Outfit cutout with its pixel size, so a row of them can share one height. */
+export type Outfit = { src: string; w: number; h: number };
+
+const outfit = (name: string, w: number): Outfit => ({ src: web(`${name}.webp`), w, h: 640 });
+
+export type DressCard = {
   title: string;
-  time: string;
-  description: string;
+  swatches: string[];
+  outfits: Outfit[];
 };
 
-export const weddingDay = {
-  venueName: "Relais Villa Vittoria",
-  venueNote:
-    "All wedding celebrations take place at our lakeside villa in Laglio, on the shores of Lake Como.",
-  events: [
-    {
-      title: "Ceremony",
-      time: "3:30 PM",
-      description: "We say I do overlooking the lake.",
-    },
-    {
-      title: "Reception",
-      time: "~5:45 PM",
-      description: "Dinner, toasts, and dancing begin as the afternoon turns to evening.",
-    },
-    {
-      title: "Celebration Ends",
-      time: "12:00 AM",
-      description: "A full night of celebrating together under the Italian sky.",
-    },
-    {
-      title: "Farewell Breakfast",
-      time: "The following morning",
-      description: "One last slow morning together before everyone heads home.",
-    },
-    {
-      title: "Check Out",
-      time: "11:30 AM",
-      description: "Check out of Relais Villa Vittoria.",
-    },
-  ] as WeddingDayEvent[],
+export type DressCode = {
+  id: string;
+  label: string;
+  background: string;
+  cards: [DressCard, DressCard];
 };
 
-export const travel = {
-  flights:
-    "Guests are best served flying into Milan Malpensa (MXP) or Milan Linate (LIN). We recommend starting to look at flights in January or February 2027 to find the best routes and fares.",
-  milanHotel: {
-    name: "Holiday Inn Milan",
-    body:
-      "For your nights in Milan, we recommend the Holiday Inn — just a few minutes from the airport, with complimentary breakfast and a shuttle for about $5 per day.",
-  },
-  transportation:
-    "A shuttle will be provided from Milan to Lake Como by us — about a 30-minute ride to Relais Villa Vittoria. Pick-up details will be shared closer to the date.",
-  accommodation:
-    "Relais Villa Vittoria has been reserved for the exclusive use of our guests. We warmly recommend everyone stay on-site so we can spend the whole weekend together, steps from every celebration.",
-  disclaimer:
-    "More details of the itinerary will be available closer to the wedding day.",
-};
-
-export type ItineraryDay = {
-  date: string;
-  day: string;
-  title: string;
-  notes: string[];
-};
-
-export const itinerary: ItineraryDay[] = [
+export const dressCode: DressCode[] = [
   {
-    date: "October 1–2",
-    day: "Friday–Saturday",
-    title: "Travel & Arrival in Milan",
-    notes: [
-      "We recommend arriving in Milan on October 1 or 2 to settle in and beat the jet lag.",
-      "We'll be flying out on Friday, October 1 and arriving Saturday, October 2.",
+    id: "dress-code-girls",
+    label: "Girls",
+    background: images.dressGirlsBg,
+    cards: [
+      {
+        title: "Welcome Party",
+        swatches: ["#f2413a", "#c1121f", "#f9d55b"],
+        outfits: [
+          outfit("attire-girls-welcome-1", 236),
+          outfit("attire-girls-welcome-2", 229),
+          outfit("attire-girls-welcome-3", 182),
+          outfit("attire-girls-welcome-4", 194),
+          outfit("attire-girls-welcome-5", 227),
+          outfit("attire-girls-welcome-6", 267),
+          outfit("attire-girls-welcome-7", 248),
+        ],
+      },
+      {
+        title: "Wedding Day",
+        swatches: ["#f1e791", "#98b3e6", "#f6b8c6", "#8e9e66"],
+        outfits: [
+          outfit("attire-girls-wedding-1", 234),
+          outfit("attire-girls-wedding-2", 205),
+          outfit("attire-girls-wedding-3", 226),
+          outfit("attire-girls-wedding-4", 233),
+        ],
+      },
     ],
   },
   {
-    date: "October 3",
-    day: "Sunday",
-    title: "Milan",
-    notes: ["Explore the city, rest up, and get ready for the week ahead."],
-  },
-  {
-    date: "October 4",
-    day: "Monday",
-    title: "Check Out of Milan & Welcome Dinner",
-    notes: [
-      "Check out of your Milan hotel and transfer to Lake Como.",
-      "Welcome Dinner at 7:30 PM — pizza and sorbet by the pool.",
-    ],
-  },
-  {
-    date: "October 5",
-    day: "Tuesday",
-    title: "The Wedding",
-    notes: [
-      "Ceremony at 3:30 PM, reception at ~5:45 PM, celebrating until midnight.",
-    ],
-  },
-  {
-    date: "October 6",
-    day: "Wednesday",
-    title: "Farewell & Check Out",
-    notes: [
-      "Farewell breakfast in the morning, then check out of Relais Villa Vittoria by 11:30 AM.",
+    id: "dress-code-guys",
+    label: "Guys",
+    background: images.dressGuysBg,
+    cards: [
+      {
+        title: "Welcome Party",
+        swatches: ["#9fb1da", "#b59b7e", "#272f8c"],
+        outfits: [
+          outfit("attire-guys-welcome-1", 177),
+          outfit("attire-guys-welcome-2", 217),
+          outfit("attire-guys-welcome-3", 209),
+          outfit("attire-guys-welcome-4", 255),
+          outfit("attire-guys-welcome-5", 394),
+        ],
+      },
+      {
+        title: "Wedding Day",
+        swatches: ["#0b0b0b", "#ffffff"],
+        outfits: [outfit("attire-guys-wedding-1", 204)],
+      },
     ],
   },
 ];
 
-export type LakeComoSpot = {
+export const accommodation = {
+  villa: {
+    title: ["Relais Villa", "Vittoria"],
+    body: "The entire villa is exclusively reserved for our wedding week.",
+    checkIn: "Check in at 3PM",
+    checkOut: "Check out at 11AM",
+  },
+  included: {
+    title: ["What is", "included"],
+    items: [
+      "AC/Heat in Rooms",
+      "All meals",
+      "Infinity Pool",
+      "Boat Tours",
+      "Restaurant, Spa, Cooking classes",
+    ],
+    linkLabel: "Click here for more info on the villa!",
+  },
+  early: {
+    title: "Want to arrive early?",
+    // CONFIRM: stay dates moved from October 4–6 to October 5–7.
+    body: [
+      "Our exclusive wedding stay at Relais Villa Vittoria will be October 5-7, but if you are planning to arrive in Lake Como a little earlier, we would love for you to have the option to stay at the villa before our wedding week.",
+      "It is still a bit too early to arrange additional nights, so we will share more details on availability and booking approximately six months before the wedding.",
+    ],
+    emphasis:
+      "More details regarding room selection and rates will be shared with you directly once RSVPs and headcount is confirmed!",
+  },
+};
+
+export type Destination = {
+  key: string;
   name: string;
-  area: string;
-  blurb: string;
-  lat: number;
-  lng: number;
-  image: string | null;
+  note: string;
+  recommend?: boolean;
+  photos: { src: string; alt: string }[];
 };
 
-export const lakeComo: LakeComoSpot[] = [
+export const italyDestinations: Destination[] = [
   {
-    name: "Bellagio",
-    area: "Central Lake",
-    blurb:
-      "The 'Pearl of the Lake' — cobblestone streets, gardens, and views in every direction.",
-    lat: 45.9876,
-    lng: 9.2612,
-    image: null,
+    key: "milan",
+    name: "Milan",
+    note: "For quick city escape",
+    photos: [
+      { src: web("travel-milan-1.jpg"), alt: "Jerome in front of the Duomo di Milano" },
+      { src: web("travel-milan-2.jpg"), alt: "Galleria Vittorio Emanuele II" },
+    ],
   },
   {
-    name: "Villa del Balbianello",
-    area: "Lenno",
-    blurb:
-      "A cinematic lakeside villa with terraced gardens worth the boat ride.",
-    lat: 45.9613,
-    lng: 9.2027,
-    image: null,
+    key: "dolomites",
+    name: "Dolomites",
+    note: "For the adventurous",
+    photos: [
+      { src: web("travel-dolomites-1.jpg"), alt: "Celebrating at the Tre Cime di Lavaredo" },
+      { src: web("travel-dolomites-2.jpg"), alt: "Resting above the Seceda ridgeline" },
+    ],
   },
   {
-    name: "Lake Cruise",
-    area: "Lake Como",
-    blurb:
-      "Hop a ferry or private boat to take in the villas and villages from the water.",
-    lat: 45.9411,
-    lng: 9.2567,
-    image: null,
+    key: "venice",
+    name: "Venice",
+    note: "For classic Italian",
+    photos: [{ src: web("travel-venice-1.jpg"), alt: "Julia along a Venetian canal" }],
   },
   {
-    name: "Como Town",
-    area: "Como",
-    blurb:
-      "Historic cathedral, silk boutiques, and lakeside cafés perfect for an afternoon.",
-    lat: 45.8081,
-    lng: 9.0852,
-    image: null,
+    key: "florence",
+    name: "Florence/Pisa",
+    note: "For art & culture",
+    photos: [
+      { src: web("travel-pisa.jpg"), alt: "Family at the Leaning Tower of Pisa" },
+      { src: web("travel-florence-1.jpg"), alt: "Palazzo Vecchio in Florence" },
+    ],
   },
   {
-    name: "Varenna",
-    area: "Eastern Shore",
-    blurb:
-      "A charming village with a lakeside promenade and the Villa Monastero gardens.",
-    lat: 46.0103,
-    lng: 9.2837,
-    image: null,
+    key: "rome",
+    name: "Rome",
+    note: "For the history lovers",
+    photos: [
+      { src: web("travel-rome-1.jpg"), alt: "Family selfie at the Colosseum" },
+      { src: web("travel-rome-2.jpg"), alt: "Selfie in front of the Colosseum" },
+    ],
   },
   {
-    name: "Menaggio",
-    area: "Western Shore",
-    blurb:
-      "A relaxed town with a lively piazza and easy ferry connections across the lake.",
-    lat: 46.0206,
-    lng: 9.2401,
-    image: null,
+    key: "amalfi",
+    name: "Amalfi Coast",
+    note: "For the coastal getaway",
+    photos: [],
   },
 ];
 
-export type DestinationRegion = {
-  region: string;
-  cities: string[];
-};
-
-export const nearbyDestinations: DestinationRegion[] = [
+export const europeDestinations: Destination[] = [
   {
-    region: "Northern Italy",
-    cities: ["Milan", "Venice", "Dolomites"],
+    key: "amsterdam",
+    name: "Amsterdam, Netherland",
+    note: "",
+    photos: [{ src: web("travel-amsterdam.jpg"), alt: "Canal houses and bikes in Amsterdam" }],
   },
   {
-    region: "Southern Italy",
-    cities: ["Rome", "Positano", "Amalfi Coast", "Capri"],
+    key: "london",
+    name: "London, England",
+    note: "",
+    recommend: true,
+    photos: [{ src: web("travel-london.jpg"), alt: "Westminster and Big Ben" }],
   },
   {
-    region: "Switzerland",
-    cities: ["Lugano", "Zurich", "Lucerne"],
+    key: "barcelona",
+    name: "Barcelona, Spain",
+    note: "",
+    photos: [{ src: web("travel-barcelona.jpg"), alt: "Family at Barcelona Cathedral" }],
   },
   {
-    region: "Austria",
-    cities: ["Innsbruck", "Salzburg", "Vienna"],
+    key: "paris",
+    name: "Paris, France",
+    note: "",
+    recommend: true,
+    photos: [{ src: web("travel-paris.jpg"), alt: "Family selfie with the Eiffel Tower" }],
   },
   {
-    region: "Germany",
-    cities: ["Munich", "Lake Constance", "Black Forest"],
-  },
-];
-
-export type DetailCard = {
-  title: string;
-  blurb: string;
-  body: string;
-};
-
-export const details: DetailCard[] = [
-  {
-    title: "Travel Documents",
-    blurb: "Check your passport early.",
-    body: "A valid passport is required for travel to Italy. Please make sure yours will not expire before January 2028 — and that it remains valid for at least 3 months beyond the date you plan to leave Italy. If it's close, renew it now, as processing can take time.",
+    key: "germany",
+    name: "Germany",
+    note: "",
+    photos: [{ src: web("travel-germany.jpg"), alt: "Mountain lookout over an alpine lake" }],
   },
   {
-    title: "Dress Code",
-    blurb: "To be announced.",
-    body: "Details on attire are coming soon. Expect an elegant celebration suited to a lakeside Italian villa in early autumn.",
+    key: "switzerland",
+    name: "Switzerland",
+    note: "",
+    recommend: true,
+    photos: [{ src: web("travel-switzerland.jpg"), alt: "Hiking selfie in the Swiss Alps" }],
   },
   {
-    title: "Registry",
-    blurb: "Your presence is the gift.",
-    body: "Having you travel to celebrate with us means everything. For those who have asked, registry details will be shared closer to the date.",
-  },
-  {
-    title: "Weather & Packing",
-    blurb: "Early autumn on the lake.",
-    body: "October in Lake Como is typically mild and crisp, cooler in the evenings. Pack a few layers and comfortable shoes for cobblestone streets.",
+    key: "greece",
+    name: "Greece",
+    note: "",
+    photos: [{ src: web("travel-greece.jpg"), alt: "Whitewashed domes in Santorini" }],
   },
 ];
+
+export type ItineraryDay = { day: string; date: string; notes: string[] };
+
+// CONFIRM: shifted one day later so the wedding lands on Wednesday, October 6.
+export const itinerary = {
+  month: "October",
+  year: "2027",
+  days: [
+    { day: "Friday", date: "01", notes: ["Fly LAX → MILAN"] },
+    { day: "Saturday", date: "02", notes: ["Arrive in Milan - Rest/Adjust to Jet Lag"] },
+    { day: "Sunday", date: "03", notes: ["Spend the day in Milan w/ us! (your preference)"] },
+    { day: "Monday", date: "04", notes: ["Free Day in Milan"] },
+    {
+      day: "Tuesday",
+      date: "05",
+      notes: ["Provided Transportation Pick up in Milan → Lake Como", "Welcome Party"],
+    },
+    { day: "Wednesday", date: "06", notes: ["Wedding Day"] },
+    { day: "Thursday", date: "07", notes: ["Free to leave Villa or continue traveling"] },
+  ] as ItineraryDay[],
+};
 
 export type FaqItem = { q: string; a: string };
 
-export const faq: FaqItem[] = [
-  {
-    q: "When should I let you know if I'm coming?",
-    a: "Because this is a destination wedding, we're collecting a soft, early RSVP to help everyone plan. Please share your initial response as soon as you can — ideally by January 31, 2027 — and a formal invitation will follow.",
-  },
-  {
-    q: "Do I need a passport?",
-    a: "Yes. A valid passport is required to travel to Italy. Please confirm yours will not expire before January 2028 and remains valid for at least 3 months after your departure from Italy. If it's expiring soon, renew it now since processing times vary.",
-  },
-  {
-    q: "When should I book my flights?",
-    a: "We recommend starting your flight search in January or February 2027. Booking earlier generally means better routes and fares.",
-  },
-  {
-    q: "Which airport should I fly into?",
-    a: "The closest options are Milan Malpensa (MXP) and Milan Linate (LIN). We'll provide a shuttle from Milan to Lake Como — about a 30-minute ride.",
-  },
-  {
-    q: "Where should I stay?",
-    a: "We've reserved Relais Villa Vittoria for the exclusive use of our guests and warmly recommend everyone stay on-site. For your nights in Milan before the wedding, we suggest the Holiday Inn near the airport.",
-  },
-  {
-    q: "How do I get from Milan to Lake Como?",
-    a: "We'll provide a shuttle from Milan to Relais Villa Vittoria — about 30 minutes. Pick-up details will be shared closer to the date.",
-  },
-  {
-    q: "What does the weekend look like?",
-    a: "Welcome Dinner on Monday, October 4 at 7:30 PM; the wedding ceremony at 3:30 PM and reception at ~5:45 PM on Tuesday, October 5; farewell breakfast and check-out by 11:30 AM on Wednesday, October 6.",
-  },
-  {
-    q: "Anything else I should do now?",
-    a: "Three things: double-check your passport, start watching flights in early 2027, and add the wedding weekend to your calendar so you don't miss any updates.",
-  },
-];
-
-export const closing = {
-  image: elopement("7401"),
-  quote: "you're my favorite person to do everything with, for the rest of my life.",
+export const faq: { left: FaqItem[]; right: FaqItem[] } = {
+  left: [
+    {
+      q: "Can I bring a plus one? my kids?",
+      a: "We love your people (and your little people!), but due to our 30-person capacity, we’re only able to accommodate the guests named on the invitation. 🤍 Your loved ones are absolutely welcome to join you in Italy and stay at a nearby hotel. We just can’t include them at the wedding itself.",
+    },
+    {
+      q: "Can I stay longer than the wedding weekend?",
+      a: "Absolutely! In fact, we highly recommend it. You made it all the way to Lake Como. Might as well make the most of it!",
+    },
+    {
+      q: "What is the weather like in Lake Como? What if it rains?",
+      a: "October in Lake Como is typically in the 60s-70s, but the weather can be a little weird! If it rains, we do have a plan B so the wedding will still go on!",
+    },
+  ],
+  right: [
+    {
+      q: "After the wedding, how will we get back?",
+      a: "We’ve got you covered getting to the wedding! 🤍 For the ride back, we’ll need to know everyone’s plans after the celebration. More details will be shared closer to the date so we can coordinate transportation and make sure everyone gets back safely.",
+    },
+    {
+      q: "Can I wear white on the wedding day?",
+      a: "We love white, but we’re saving that one for the bride! 🤍 Please avoid white, ivory, or anything that could be mistaken for bridal attire. Thank you for letting us have our main-character moment!",
+    },
+  ],
 };
 
-export const nav = [
-  { label: "Story", href: "#story" },
-  { label: "Welcome", href: "#welcome-dinner" },
-  { label: "Wedding", href: "#wedding-day" },
-  { label: "Travel", href: "#travel" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "FAQ", href: "#faq" },
-];
+export const rsvp = {
+  dueBy: "Nov 1, 2026",
+  contacts: [
+    { name: "Julia Cecilia", phone: "(562) 457-7577" },
+    { name: "Jerome Tadeo", phone: "(626) 278-7329" },
+  ],
+  // PLACEHOLDER: fill in the Instagram handle.
+  instagram: "___",
+  followNote: "for more wedding updates and travel tips as we count down to October 2027!",
+};

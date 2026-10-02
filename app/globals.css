@@ -2,32 +2,28 @@
 
 @theme inline {
   /* Palette */
-  --color-sage: #939e66;
-  --color-sage-deep: #7c8654;
-  --color-taupe: #aeab97;
-  --color-cream: #dbd5c1;
-  --color-paper: #f6f4ed;
-  --color-paper-deep: #efe9dc;
-  --color-forest: #3e4f3c;
-  --color-forest-deep: #2c382a;
+  --color-sand: #dfd9c9;
+  --color-olive: #36350b;
+  --color-cocoa: #482117;
+  --color-ivory: #f7f5f0;
 
   /* Fonts */
+  --font-script: var(--font-script);
   --font-display: var(--font-display);
-  --font-serif: var(--font-serif);
-  --font-heading: var(--font-heading);
-  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-hand: var(--font-hand);
 
   /* Easing */
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
-  --background: #f6f4ed;
-  --foreground: #3e4f3c;
+  --background: #dfd9c9;
+  --foreground: #482117;
 }
 
 * {
-  border-color: color-mix(in srgb, var(--color-forest) 12%, transparent);
+  border-color: color-mix(in srgb, var(--color-cocoa) 18%, transparent);
 }
 
 html {
@@ -41,60 +37,69 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Hero script names */
+/* Burgues-style flourish script */
+.font-script {
+  font-family: var(--font-script), cursive;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Condensed high-contrast caps serif for headings and labels */
 .font-display {
-  font-family: var(--font-display), cursive;
-}
-
-/* Labels, nav, accents */
-.font-serif {
-  font-family: var(--font-serif), Georgia, serif;
-}
-
-/* Section headings — high-contrast wedding display */
-.font-heading {
-  font-family: var(--font-heading), "Times New Roman", serif;
-  font-weight: 500;
-  font-feature-settings: "liga" 1, "kern" 1;
-  letter-spacing: 0.015em;
-}
-
-/* Body copy — refined invitation serif */
-.font-body {
-  font-family: var(--font-body), Georgia, serif;
-  font-feature-settings: "liga" 1, "kern" 1;
-  line-height: 1.75;
-}
-
-/* Small caps tracking label */
-.label {
-  font-family: var(--font-serif), serif;
+  font-family: var(--font-display), "Times New Roman", serif;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.42em;
-  font-size: 0.7rem;
-  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
 }
 
-/* Selection */
+/* Body copy, nav, and small labels */
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.font-hand {
+  font-family: var(--font-hand), cursive;
+}
+
+/* Tints a transparent PNG/SVG with the current text color: style={{ "--mask": "url(...)" }} */
+.mask-tint {
+  background-color: currentColor;
+  -webkit-mask: var(--mask) center / contain no-repeat;
+  mask: var(--mask) center / contain no-repeat;
+}
+
+/* Postage-stamp perforated border */
+.stamp-edge {
+  --r: 3px;
+  padding: calc(2.5 * var(--r));
+  -webkit-mask:
+    radial-gradient(var(--r), #0000 98%, #000) round calc(-1.5 * var(--r)) calc(-1.5 * var(--r)) /
+      calc(3 * var(--r)) calc(3 * var(--r)),
+    linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--r)) calc(100% - 3 * var(--r));
+  mask:
+    radial-gradient(var(--r), #0000 98%, #000) round calc(-1.5 * var(--r)) calc(-1.5 * var(--r)) /
+      calc(3 * var(--r)) calc(3 * var(--r)),
+    linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--r)) calc(100% - 3 * var(--r));
+}
+
 ::selection {
-  background: color-mix(in srgb, var(--color-sage) 45%, transparent);
-  color: var(--color-forest-deep);
+  background: color-mix(in srgb, var(--color-olive) 80%, transparent);
+  color: var(--color-ivory);
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-paper-deep);
+  background: var(--color-sand);
 }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-sage) 70%, var(--color-forest));
+  background: var(--color-olive);
   border-radius: 999px;
-  border: 2px solid var(--color-paper-deep);
+  border: 2px solid var(--color-sand);
 }
 
-/* Hide scrollbar utility for horizontal strips */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -104,40 +109,10 @@ body {
 }
 
 /* Legibility on photo backgrounds */
-.text-shadow-hero {
+.text-shadow-photo {
   text-shadow:
-    0 1px 2px rgba(44, 56, 42, 0.55),
-    0 2px 16px rgba(44, 56, 42, 0.4);
-}
-
-/* Subtle grain overlay */
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Leaflet map — wedding palette */
-.map-embed {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
-  filter: saturate(0.9);
-}
-
-.map-embed .leaflet-control-attribution {
-  background: color-mix(in srgb, var(--color-paper) 85%, transparent) !important;
-  color: color-mix(in srgb, var(--color-forest) 45%, transparent) !important;
-  font-size: 9px;
-  padding: 2px 6px;
-}
-
-.map-embed .leaflet-control-attribution a {
-  color: color-mix(in srgb, var(--color-forest) 55%, transparent) !important;
+    0 1px 2px rgba(20, 20, 4, 0.35),
+    0 2px 18px rgba(20, 20, 4, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {

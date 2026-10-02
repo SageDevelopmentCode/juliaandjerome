@@ -1,47 +1,35 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, type ReactNode } from "react";
+import { useForm, useWatch, type UseFormRegisterReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AnimatePresence, motion } from "framer-motion";
-import { cn, viewportOnce, EASE_SOFT } from "@/lib/utils";
-import { couple, event } from "@/app/data/content";
+import { cn, EASE_SOFT } from "@/lib/utils";
+import { couple, event, rsvp } from "@/app/data/content";
 import { submitRsvp } from "@/app/actions/rsvp";
 
-const schema = z
-  .object({
-    name: z.string().min(2, "Please enter your full name"),
-    email: z.string().email("Please enter a valid email"),
-    passportExpiresBefore2028: z.enum(["yes", "no"], {
-      message: "Please let us know about your passport",
-    }),
-    attending: z.enum(["yes", "maybe", "no"]),
-    address: z.string().optional(),
-    note: z.string().optional(),
-  })
-  .refine(
-    (d) =>
-      d.attending === "no" ||
-      (d.address !== undefined && d.address.trim().length >= 5),
-    {
-      message: "Please enter your mailing address",
-      path: ["address"],
-    }
-  );
+const schema = z.object({
+  name: z.string().trim().min(2, "Please enter your name(s)"),
+  email: z.string().trim().email("Please enter a valid email"),
+  attending: z.enum(["yes", "maybe", "no"], { message: "Please choose an option" }),
+  arrival: z.string().optional(),
+  travelAfter: z.string().optional(),
+  dietary: z.string().optional(),
+  hasValidPassport: z.enum(["yes", "no"], { message: "Please let us know about your passport" }),
+  passportExpiry: z.string().optional(),
+  questions: z.string().optional(),
+});
 
 type FormValues = z.infer<typeof schema>;
 
-const fieldBase =
-  "w-full border-0 border-b border-forest/20 bg-transparent pb-2 pt-1 text-forest placeholder:text-forest/35 focus:border-sage focus:outline-none transition-colors";
-const labelBase =
-  "font-serif text-xs uppercase tracking-[0.25em] text-forest/55";
+const field =
+  "mt-2 w-full border-0 border-b border-ivory/35 bg-transparent pb-1.5 pt-1 font-mono text-[0.95rem] text-ivory placeholder:text-ivory/35 transition-colors focus:border-ivory focus:outline-none";
 
 function googleCalendarUrl() {
   const start = new Date(event.dateISO);
-  const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
-  const fmt = (d: Date) =>
-    d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+  const end = new Date(start.getTime() + 9 * 60 * 60 * 1000);
+  const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
   const params = new URLSearchParams({
     action: "TEMPLATE",
     text: `${couple.combined} Wedding`,
@@ -52,145 +40,127 @@ function googleCalendarUrl() {
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
-function PillGroup({
-  options,
-  value,
-  register,
+function Question({
+  n,
+  label,
+  htmlFor,
+  error,
+  children,
 }: {
-  options: { value: string; label: string }[];
-  value: string | undefined;
-  register: ReturnType<ReturnType<typeof useForm<FormValues>>["register"]>;
+  n: number;
+  label: string;
+  htmlFor?: string;
+  error?: string;
+  children: ReactNode;
 }) {
   return (
-    <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-      {options.map((opt) => (
-        <label
-          key={opt.value}
-          className={cn(
-            "flex-1 cursor-pointer rounded-[2px] border px-5 py-4 text-center font-serif text-sm transition-all duration-300",
-            value === opt.value
-              ? "border-forest bg-forest text-paper"
-              : "border-forest/20 text-forest/70 hover:border-forest/50"
-          )}
-        >
-          <input
-            type="radio"
-            value={opt.value}
-            {...register}
-            className="sr-only"
-          />
-          {opt.label}
-        </label>
-      ))}
+    <div className="grid grid-cols-[1.6rem_1fr]">
+      <span className="pt-px font-mono text-[0.95rem] md:text-base">{n}.</span>
+      <div>
+        {htmlFor ? (
+          <label htmlFor={htmlFor} className="font-mono text-[0.95rem] md:text-base">
+            {label}
+          </label>
+        ) : (
+          <p className="font-mono text-[0.95rem] md:text-base">{label}</p>
+        )}
+        {children}
+        {error && <p className="mt-1.5 font-mono text-xs text-[#f2c9b8]">{error}</p>}
+      </div>
     </div>
+  );
+}
+
+function Choice({
+  value,
+  selected,
+  register,
+  children,
+}: {
+  value: string;
+  selected: boolean;
+  register: UseFormRegisterReturn;
+  children: ReactNode;
+}) {
+  return (
+    <label
+      className={cn(
+        "flex cursor-pointer items-start gap-3 rounded-sm border px-3 py-2 font-mono text-[0.9rem] transition-colors",
+        selected ? "border-ivory bg-ivory text-olive" : "border-ivory/25 hover:border-ivory/60"
+      )}
+    >
+      <input type="radio" value={value} {...register} className="sr-only" />
+      {children}
+    </label>
   );
 }
 
 export default function Rsvp() {
   const [submitError, setSubmitError] = useState<string | null>(null);
-
+  const [submitted, setSubmitted] = useState(false);
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<FormValues>({
-    resolver: zodResolver(schema),
-    defaultValues: { attending: "yes" },
-  });
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
-  const attending = watch("attending");
-  const passportExpiresBefore2028 = watch("passportExpiresBefore2028");
+  const attending = useWatch({ control, name: "attending" });
+  const hasValidPassport = useWatch({ control, name: "hasValidPassport" });
 
   async function onSubmit(data: FormValues) {
     setSubmitError(null);
     const result = await submitRsvp(data);
-    if (!result.success) {
+    if (result.success) {
+      setSubmitted(true);
+    } else {
       setSubmitError(result.error);
     }
   }
 
   return (
-    <section id="rsvp" className="relative bg-paper-deep py-28 md:py-36">
-      <div className="mx-auto max-w-2xl px-5 md:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={viewportOnce}
-          transition={{ duration: 1, ease: EASE_SOFT }}
-          className="mb-12 text-center"
-        >
-          <span className="label text-sage-deep">save the date</span>
-          <h2 className="font-heading mt-4 text-5xl text-forest md:text-6xl">
-            Soft RSVP
-          </h2>
-          <p className="mt-5 leading-relaxed text-forest/70">
-            Since we&apos;re celebrating abroad, we&apos;re gathering an early
-            headcount to help everyone plan. This isn&apos;t final — a formal
-            invitation will follow — but your early reply helps us enormously.
-          </p>
-          <p className="font-serif mt-4 text-sm uppercase tracking-[0.25em] text-forest/50">
-            kindly reply by {event.rsvpBy}
-          </p>
-        </motion.div>
+    <section id="rsvp" className="scroll-mt-16 border-t-[18px] border-sand bg-olive text-ivory">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-10 md:px-10 md:py-24">
+        <h2 aria-label="RSVP" className="relative mx-auto flex items-center justify-center select-none">
+          <span aria-hidden className="font-script absolute -left-[0.3em] top-1/2 -translate-y-[56%] text-[clamp(7rem,17vw,13.5rem)] leading-none">
+            R
+          </span>
+          <span aria-hidden className="font-display relative pl-[0.55em] text-[clamp(5rem,11vw,8.6rem)]">
+            SVP
+          </span>
+        </h2>
 
         <AnimatePresence mode="wait">
-          {isSubmitSuccessful ? (
+          {submitted ? (
             <motion.div
               key="success"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.7, ease: EASE_SOFT }}
-              className="rounded-[2px] border border-sage/40 bg-paper p-10 text-center md:p-12"
+              className="text-center md:text-left"
             >
-              <h3 className="font-heading text-4xl italic text-forest md:text-5xl">
-                Thank You
-              </h3>
-              <p className="mt-4 text-forest/70">
-                Your early response has been received. We cannot wait to
-                celebrate with you in Lake Como.
+              <p className="font-script text-6xl">Thank you</p>
+              <p className="mt-5 font-mono text-sm leading-relaxed">
+                Your soft RSVP has been received. We&apos;ll be in touch with more details as the
+                date gets closer. We can&apos;t wait to celebrate with you in Lake Como!
               </p>
-
-              <div className="mx-auto mt-8 max-w-md space-y-4 text-left">
-                <p className="font-serif text-xs uppercase tracking-[0.25em] text-sage-deep">
-                  Before you go — a few reminders
-                </p>
-                <ul className="space-y-4 text-sm leading-relaxed text-forest/70">
-                  <li>
-                    <span className="font-serif text-forest">Check your passport.</span>{" "}
-                    Confirm it won&apos;t expire before January 2028 and remains
-                    valid for at least 3 months after you leave Italy.
-                  </li>
-                  <li>
-                    <span className="font-serif text-forest">Start watching flights.</span>{" "}
-                    Milan Malpensa (MXP) and Milan Linate (LIN) are your best
-                    options — we recommend beginning your search in January or
-                    February 2027.
-                  </li>
-                  <li>
-                    <span className="font-serif text-forest">
-                      Sign up for calendar alerts.
-                    </span>{" "}
-                    Add the wedding weekend to your calendar now so you
-                    don&apos;t miss any updates as plans come together.
-                  </li>
-                </ul>
-              </div>
-
-              <div className="mt-8 flex flex-col items-center gap-4">
+              <div className="mt-8 flex flex-col items-center gap-4 md:items-start">
                 <a
                   href={googleCalendarUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full bg-forest px-8 py-3 font-serif text-xs uppercase tracking-[0.25em] text-paper transition-colors duration-300 hover:bg-forest-deep"
+                  className="bg-ivory px-7 py-3 font-mono text-xs uppercase tracking-[0.2em] text-olive transition-opacity hover:opacity-85"
                 >
-                  Add to Calendar
+                  Add to calendar
                 </a>
                 <button
-                  onClick={() => reset()}
-                  className="font-serif text-xs uppercase tracking-[0.25em] text-sage-deep underline-offset-4 hover:underline"
+                  onClick={() => {
+                    reset();
+                    setSubmitted(false);
+                  }}
+                  className="font-mono text-xs uppercase tracking-[0.2em] underline-offset-4 hover:underline"
                 >
                   Submit another response
                 </button>
@@ -203,148 +173,93 @@ export default function Rsvp() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-9"
               noValidate
+              className="space-y-6"
             >
-              <div className="grid gap-9 sm:grid-cols-2">
-                <div>
-                  <label className={labelBase} htmlFor="name">
-                    Full Name
-                  </label>
-                  <input
-                    id="name"
-                    {...register("name")}
-                    className={cn(fieldBase, "mt-3")}
-                    placeholder="Your name"
-                  />
-                  {errors.name && (
-                    <p className="mt-2 text-xs text-sage-deep">
-                      {errors.name.message}
-                    </p>
-                  )}
+              <Question n={1} label="Guests Name:" htmlFor="rsvp-name" error={errors.name?.message}>
+                <input id="rsvp-name" {...register("name")} className={field} autoComplete="name" placeholder="Full name(s)" />
+              </Question>
+
+              <Question n={2} label="Email:" htmlFor="rsvp-email" error={errors.email?.message}>
+                <input
+                  id="rsvp-email"
+                  type="email"
+                  {...register("email")}
+                  className={field}
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                />
+              </Question>
+
+              <Question n={3} label="Are you thinking of joining us at Lake Como?" error={errors.attending?.message}>
+                <div className="mt-3 space-y-2">
+                  <Choice value="yes" selected={attending === "yes"} register={register("attending")}>
+                    <span aria-hidden>💚</span> Yes — we’re hoping to be there!
+                  </Choice>
+                  <Choice value="maybe" selected={attending === "maybe"} register={register("attending")}>
+                    <span aria-hidden>💛</span> Maybe — we’re still figuring things out
+                  </Choice>
+                  <Choice value="no" selected={attending === "no"} register={register("attending")}>
+                    <span aria-hidden>🤍</span> Unfortunately, we don’t think we’ll be able to make it
+                  </Choice>
                 </div>
-                <div>
-                  <label className={labelBase} htmlFor="email">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    {...register("email")}
-                    className={cn(fieldBase, "mt-3")}
-                    placeholder="you@example.com"
-                  />
-                  {errors.email && (
-                    <p className="mt-2 text-xs text-sage-deep">
-                      {errors.email.message}
-                    </p>
-                  )}
-                </div>
-              </div>
+              </Question>
 
-              <div>
-                <span className={labelBase}>
-                  Do you have a passport that will expire before January 2028?
-                </span>
-                <p className="mt-2 text-sm leading-relaxed text-forest/55">
-                  Your passport must be valid for at least 3 months beyond the
-                  date you plan to leave Italy.
-                </p>
-                <PillGroup
-                  options={[
-                    { value: "no", label: "No, I'm good" },
-                    { value: "yes", label: "Yes, it will" },
-                  ]}
-                  value={passportExpiresBefore2028}
-                  register={register("passportExpiresBefore2028")}
-                />
-                {errors.passportExpiresBefore2028 && (
-                  <p className="mt-2 text-xs text-sage-deep">
-                    {errors.passportExpiresBefore2028.message}
-                  </p>
-                )}
-                {passportExpiresBefore2028 === "yes" && (
-                  <p className="mt-3 rounded-[2px] bg-cream/50 px-4 py-3 text-sm text-forest/75">
-                    Please renew your passport soon — processing can take
-                    several weeks, and you&apos;ll want it valid well beyond the
-                    trip.
-                  </p>
-                )}
-              </div>
+              <Question n={4} label="When are you thinking of arriving?" htmlFor="rsvp-arrival">
+                <input id="rsvp-arrival" {...register("arrival")} className={field} placeholder="e.g. Saturday, October 2" />
+              </Question>
 
-              <div>
-                <span className={labelBase}>
-                  Will you and the guest (invited) attend?
-                </span>
-                <PillGroup
-                  options={[
-                    { value: "yes", label: "Yes, count us in" },
-                    { value: "maybe", label: "Not sure yet" },
-                    { value: "no", label: "Sadly, no" },
-                  ]}
-                  value={attending}
-                  register={register("attending")}
-                />
-              </div>
+              <Question n={5} label="Are you planning to travel anywhere after the wedding?" htmlFor="rsvp-after">
+                <input id="rsvp-after" {...register("travelAfter")} className={field} placeholder="e.g. Rome & the Amalfi Coast" />
+              </Question>
 
-              <AnimatePresence initial={false}>
-                {attending !== "no" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.5, ease: EASE_SOFT }}
-                    className="overflow-hidden"
-                  >
-                    <label className={labelBase} htmlFor="address">
-                      What is your address?
-                    </label>
-                    <p className="mt-1 text-xs text-forest/45">
-                      So we can send your formal invitation.
-                    </p>
-                    <textarea
-                      id="address"
-                      rows={2}
-                      {...register("address")}
-                      className={cn(fieldBase, "mt-3 resize-none")}
-                      placeholder="Street, City, State/Province, Postal Code, Country"
-                    />
-                    {errors.address && (
-                      <p className="mt-2 text-xs text-sage-deep">
-                        {errors.address.message}
-                      </p>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <Question n={6} label="Dietary Requirements?" htmlFor="rsvp-dietary">
+                <input id="rsvp-dietary" {...register("dietary")} className={field} placeholder="Allergies, vegetarian, etc." />
+              </Question>
 
-              <div>
-                <label className={labelBase} htmlFor="note">
-                  A Note for the Couple
-                </label>
-                <textarea
-                  id="note"
-                  rows={3}
-                  {...register("note")}
-                  className={cn(fieldBase, "mt-3 resize-none")}
-                  placeholder="Send your love..."
-                />
-              </div>
-
-              {submitError && (
-                <p className="text-center text-sm text-sage-deep">
-                  {submitError}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full rounded-full bg-forest py-4 font-serif text-xs uppercase tracking-[0.3em] text-paper transition-colors duration-300 hover:bg-forest-deep disabled:opacity-60"
+              <Question
+                n={7}
+                label="Do you currently have a valid passport? When does your passport expire?"
+                error={errors.hasValidPassport?.message}
               >
-                {isSubmitting ? "Sending..." : "Send Soft RSVP"}
-              </button>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <Choice value="yes" selected={hasValidPassport === "yes"} register={register("hasValidPassport")}>
+                    Yes, I do
+                  </Choice>
+                  <Choice value="no" selected={hasValidPassport === "no"} register={register("hasValidPassport")}>
+                    Not yet
+                  </Choice>
+                </div>
+                <label htmlFor="rsvp-expiry" className="sr-only">
+                  Passport expiry
+                </label>
+                <input
+                  id="rsvp-expiry"
+                  {...register("passportExpiry")}
+                  className={field}
+                  placeholder="Expiry date (e.g. 03/2031)"
+                />
+              </Question>
+
+              <Question
+                n={8}
+                label="What questions do you have about the wedding or traveling to Italy? We'd love to help!"
+                htmlFor="rsvp-questions"
+              >
+                <textarea id="rsvp-questions" rows={3} {...register("questions")} className={cn(field, "resize-none")} />
+              </Question>
+
+              {submitError && <p className="font-mono text-sm text-[#f2c9b8]">{submitError}</p>}
+
+              <div className="pl-[1.6rem]">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-ivory py-3.5 font-mono text-xs uppercase tracking-[0.25em] text-olive transition-opacity hover:opacity-85 disabled:opacity-60"
+                >
+                  {isSubmitting ? "Sending..." : `Send soft RSVP · due ${rsvp.dueBy}`}
+                </button>
+              </div>
             </motion.form>
           )}
         </AnimatePresence>

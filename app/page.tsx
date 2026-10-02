@@ -1,37 +1,47 @@
-import Envelope from "@/app/components/Envelope";
 import Nav from "@/app/components/Nav";
 import Hero from "@/app/components/Hero";
-import Story from "@/app/components/Story";
-import Countdown from "@/app/components/Countdown";
-import WelcomeDinner from "@/app/components/WelcomeDinner";
-import WeddingDay from "@/app/components/WeddingDay";
-import Travel from "@/app/components/Travel";
-import Gallery from "@/app/components/Gallery";
-import Details from "@/app/components/Details";
-import Rsvp from "@/app/components/Rsvp";
+import Invitation from "@/app/components/Invitation";
+import UntilIDo from "@/app/components/UntilIDo";
+import WhyLakeComo from "@/app/components/WhyLakeComo";
+import WelcomeParty from "@/app/components/WelcomeParty";
+import Timeline from "@/app/components/Timeline";
+import Transportation from "@/app/components/Transportation";
+import DressCode from "@/app/components/DressCode";
+import Accommodation from "@/app/components/Accommodation";
+import ItalyMap from "@/app/components/ItalyMap";
+import EuropeMap from "@/app/components/EuropeMap";
+import Itinerary from "@/app/components/Itinerary";
+import PresenceQuote from "@/app/components/PresenceQuote";
 import Faq from "@/app/components/Faq";
-import Closing from "@/app/components/Closing";
-import Footer from "@/app/components/Footer";
+import Rsvp from "@/app/components/Rsvp";
+import SoftRsvp from "@/app/components/SoftRsvp";
+import { dressCode } from "@/app/data/content";
 
 export default function Home() {
+  const [girls, guys] = dressCode;
+
   return (
     <>
-      <Envelope />
       <Nav />
       <main>
         <Hero />
-        <Story />
-        <Countdown />
-        <WelcomeDinner />
-        <WeddingDay />
-        <Travel />
-        <Gallery />
-        <Details />
-        <Rsvp />
+        <Invitation />
+        <UntilIDo />
+        <WhyLakeComo />
+        <WelcomeParty />
+        <Timeline />
+        <Transportation />
+        <DressCode data={girls} titleTone="ivory" />
+        <DressCode data={guys} titleTone="cocoa" />
+        <Accommodation />
+        <ItalyMap />
+        <EuropeMap />
+        <Itinerary />
+        <PresenceQuote />
         <Faq />
-        <Closing />
+        <Rsvp />
+        <SoftRsvp />
       </main>
-      <Footer />
     </>
   );
 }

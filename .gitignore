@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw photo/video originals (compressed into public/assets/web by scripts/optimize-assets.mjs)
+/source-assets

@@ -1,91 +1,56 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { viewportOnce, EASE_SOFT } from "@/lib/utils";
+import { Fragment, useSyncExternalStore } from "react";
+import { cn } from "@/lib/utils";
 import { event } from "@/app/data/content";
 
-type TimeLeft = { days: number; hours: number; minutes: number; seconds: number };
+const TARGET = new Date(event.dateISO).getTime();
 
-function getTimeLeft(target: number): TimeLeft {
-  const diff = Math.max(0, target - Date.now());
-  const days = Math.floor(diff / 86_400_000);
-  const hours = Math.floor((diff % 86_400_000) / 3_600_000);
-  const minutes = Math.floor((diff % 3_600_000) / 60_000);
-  const seconds = Math.floor((diff % 60_000) / 1000);
-  return { days, hours, minutes, seconds };
+function subscribe(onTick: () => void) {
+  const id = setInterval(onTick, 1000);
+  return () => clearInterval(id);
 }
 
-export default function Countdown() {
-  const target = new Date(event.dateISO).getTime();
-  const [time, setTime] = useState<TimeLeft | null>(null);
+/** Whole seconds, so the snapshot stays stable between ticks. Null on the server so markup never mismatches. */
+const nowSeconds = () => Math.floor(Date.now() / 1000);
+const serverSnapshot = () => null;
 
-  useEffect(() => {
-    setTime(getTimeLeft(target));
-    const id = setInterval(() => setTime(getTimeLeft(target)), 1000);
-    return () => clearInterval(id);
-  }, [target]);
-
-  const units: { label: string; value: number }[] = [
-    { label: "Days", value: time?.days ?? 0 },
-    { label: "Hours", value: time?.hours ?? 0 },
-    { label: "Minutes", value: time?.minutes ?? 0 },
-    { label: "Seconds", value: time?.seconds ?? 0 },
+function split(now: number) {
+  const diff = Math.max(0, Math.floor(TARGET / 1000) - now);
+  return [
+    { label: "Days", value: Math.floor(diff / 86_400) },
+    { label: "Hours", value: Math.floor((diff % 86_400) / 3_600) },
+    { label: "Minutes", value: Math.floor((diff % 3_600) / 60) },
+    { label: "Seconds", value: diff % 60 },
   ];
+}
+
+const LABELS = ["Days", "Hours", "Minutes", "Seconds"];
+
+export default function Countdown({ className }: { className?: string }) {
+  const now = useSyncExternalStore(subscribe, nowSeconds, serverSnapshot);
+  const units = now === null ? LABELS.map((label) => ({ label, value: null })) : split(now);
 
   return (
-    <section className="grain relative overflow-hidden bg-forest py-24 text-cream md:py-32">
-      <div className="relative mx-auto max-w-4xl px-5 text-center md:px-10">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={viewportOnce}
-          transition={{ duration: 0.9, ease: EASE_SOFT }}
-          className="label block text-cream/60"
-        >
-          so please join us
-        </motion.span>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={viewportOnce}
-          transition={{ duration: 1, ease: EASE_SOFT, delay: 0.1 }}
-          className="font-heading mt-4 text-5xl text-cream md:text-6xl"
-        >
-          {event.dateShort}
-        </motion.h2>
-
-        <div className="mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-3 md:gap-8">
-          {units.map((u, i) => (
-            <motion.div
-              key={u.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={viewportOnce}
-              transition={{ duration: 0.8, ease: EASE_SOFT, delay: 0.15 + i * 0.08 }}
-              className="flex flex-col items-center"
-            >
-              <span className="font-serif text-4xl tabular-nums text-cream md:text-6xl">
-                {u.value.toString().padStart(2, "0")}
-              </span>
-              <span className="font-serif mt-2 text-[0.6rem] uppercase tracking-[0.3em] text-cream/55 md:text-xs">
-                {u.label}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={viewportOnce}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="font-serif mt-12 text-sm uppercase tracking-[0.3em] text-cream/60"
-        >
-          until we say I do
-        </motion.p>
-      </div>
-    </section>
+    <div
+      role="timer"
+      aria-label={`Countdown to ${event.dateLong}`}
+      aria-live="off"
+      className={cn("text-shadow-photo flex items-stretch text-ivory", className)}
+    >
+      {units.map((u, i) => (
+        <Fragment key={u.label}>
+          {i > 0 && <span aria-hidden className="mx-3 w-px bg-ivory/40 md:mx-6" />}
+          <div className="flex min-w-[3.2rem] flex-col items-center md:min-w-[4.5rem]">
+            <span className="font-display text-[clamp(1.8rem,4vw,3rem)] leading-none tabular-nums">
+              {u.value === null ? "--" : String(u.value).padStart(2, "0")}
+            </span>
+            <span className="mt-1.5 font-mono text-[0.55rem] uppercase tracking-[0.12em] md:text-[0.7rem]">
+              {u.label}
+            </span>
+          </div>
+        </Fragment>
+      ))}
+    </div>
   );
 }

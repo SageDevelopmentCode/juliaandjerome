@@ -1,130 +1,114 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn, EASE_SOFT } from "@/lib/utils";
-import { couple, nav } from "@/app/data/content";
+import { couple, images, nav } from "@/app/data/content";
+import { Tint } from "@/app/components/ui";
+
+const linkClass =
+  "font-mono text-[0.7rem] uppercase tracking-[0.12em] text-ivory/90 transition-opacity hover:opacity-60 lg:text-[0.8rem]";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 120);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const solid = scrolled || menuOpen;
+  const allLinks = [...nav.left, ...nav.right];
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, ease: EASE_SOFT, delay: 0.3 }}
+      <header
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
-          solid
-            ? "bg-paper/85 shadow-[0_1px_0_rgba(62,79,60,0.08)] backdrop-blur-md"
-            : "bg-gradient-to-b from-forest-deep/50 via-forest-deep/20 to-transparent"
+          scrolled || menuOpen ? "bg-olive/95 backdrop-blur-sm" : "bg-transparent"
         )}
       >
-        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-10">
-          {/* Left: desktop links */}
-          <div className="hidden flex-1 items-center gap-6 md:flex">
-            {nav.map((item) => (
+        <nav
+          className={cn(
+            "mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-5 transition-[height] duration-500 md:px-10",
+            scrolled ? "h-16" : "h-20 md:h-28"
+          )}
+        >
+          <div className="hidden items-center justify-around md:flex">
+            {nav.left.map((item) => (
+              <a key={item.href} href={item.href} className={linkClass}>
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <div className="md:hidden" />
+
+          <a href="#top" aria-label={couple.combined} className="text-ivory">
+            <Tint
+              src={images.monogram}
+              className={cn(
+                "transition-all duration-500",
+                scrolled ? "h-9 w-7" : "h-12 w-9 md:h-16 md:w-12"
+              )}
+            />
+          </a>
+
+          <div className="hidden items-center justify-around md:flex">
+            {nav.right.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className={cn(
-                  "whitespace-nowrap font-serif text-xs font-medium uppercase tracking-[0.15em] transition-colors",
-                  solid
-                    ? "text-forest/70 hover:text-forest"
-                    : "text-shadow-hero text-cream hover:text-paper"
-                )}
+                className={cn(linkClass, item.label === "FAQ" && "underline underline-offset-4")}
               >
                 {item.label}
               </a>
             ))}
           </div>
 
-          {/* Monogram — left on mobile, centered on desktop */}
-          <a
-            href="#top"
-            className="flex flex-none items-center justify-start md:justify-center"
-          >
-            <Image
-              src="/assets/Logo.png"
-              alt={`${couple.combined}`}
-              width={120}
-              height={120}
-              className={cn(
-                "h-11 w-11 transition-[filter] duration-500",
-                solid ? "invert-0" : "invert"
-              )}
-            />
-          </a>
-
-          {/* Right: RSVP + mobile toggle */}
-          <div className="flex flex-1 items-center justify-end gap-4">
-            <a
-              href="#rsvp"
-              className={cn(
-                "inline-block rounded-full px-4 py-2 font-serif text-[0.65rem] font-medium uppercase tracking-[0.15em] transition-all duration-300 md:px-7 md:py-2.5 md:text-xs md:tracking-[0.2em]",
-                solid
-                  ? "border border-forest/30 bg-forest text-paper shadow-sm hover:bg-forest-deep"
-                  : "bg-cream text-forest shadow-[0_2px_12px_rgba(44,56,42,0.35)] hover:bg-paper hover:shadow-[0_4px_16px_rgba(44,56,42,0.4)]"
-              )}
-            >
-              RSVP
-            </a>
-
+          <div className="flex justify-end md:hidden">
             <button
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
               onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+              className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
             >
               <span
                 className={cn(
-                  "h-px w-6 transition-all duration-300",
-                  solid ? "bg-forest" : "bg-cream",
+                  "h-px w-6 bg-ivory transition-transform duration-300",
                   menuOpen && "translate-y-[3.5px] rotate-45"
                 )}
               />
               <span
                 className={cn(
-                  "h-px w-6 transition-all duration-300",
-                  solid ? "bg-forest" : "bg-cream",
+                  "h-px w-6 bg-ivory transition-transform duration-300",
                   menuOpen && "-translate-y-[3.5px] -rotate-45"
                 )}
               />
             </button>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
-      {/* Mobile drawer */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-paper md:hidden"
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-olive md:hidden"
           >
-            {nav.map((item, i) => (
+            {allLinks.map((item, i) => (
               <motion.a
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.08, ease: EASE_SOFT }}
-                className="font-serif text-2xl uppercase tracking-[0.25em] text-forest"
+                transition={{ delay: 0.08 + i * 0.06, ease: EASE_SOFT }}
+                className="font-display text-4xl text-ivory"
               >
                 {item.label}
               </motion.a>

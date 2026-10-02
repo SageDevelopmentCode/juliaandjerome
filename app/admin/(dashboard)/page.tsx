@@ -6,8 +6,15 @@ type RsvpResponse = {
   created_at: string;
   name: string;
   email: string;
-  passport_expires_before_2028: boolean;
   attending: "yes" | "maybe" | "no";
+  arrival: string | null;
+  travel_after: string | null;
+  dietary: string | null;
+  has_valid_passport: boolean | null;
+  passport_expiry: string | null;
+  questions: string | null;
+  /** v1 fields, only set on submissions made before the redesign. */
+  passport_expires_before_2028: boolean | null;
   address: string | null;
   note: string | null;
 };
@@ -22,27 +29,38 @@ function formatDate(iso: string) {
   });
 }
 
-function attendingLabel(value: RsvpResponse["attending"]) {
-  switch (value) {
-    case "yes":
-      return "Yes";
-    case "maybe":
-      return "Maybe";
-    case "no":
-      return "No";
+const attendingLabel: Record<RsvpResponse["attending"], string> = {
+  yes: "Yes",
+  maybe: "Maybe",
+  no: "No",
+};
+
+const attendingStyle: Record<RsvpResponse["attending"], string> = {
+  yes: "bg-olive text-ivory",
+  maybe: "bg-sand text-cocoa",
+  no: "bg-cocoa/10 text-cocoa/70",
+};
+
+function passportSummary(row: RsvpResponse) {
+  if (row.has_valid_passport === null) {
+    if (row.passport_expires_before_2028 === null) return "—";
+    return row.passport_expires_before_2028 ? "Expires before 2028" : "OK";
   }
+  const status = row.has_valid_passport ? "Valid" : "No passport";
+  return row.passport_expiry ? `${status} · exp. ${row.passport_expiry}` : status;
 }
 
-function attendingStyle(value: RsvpResponse["attending"]) {
-  switch (value) {
-    case "yes":
-      return "bg-forest/10 text-forest";
-    case "maybe":
-      return "bg-cream text-forest/80";
-    case "no":
-      return "bg-taupe/20 text-forest/60";
-  }
-}
+const columns = [
+  "Date",
+  "Name",
+  "Email",
+  "Attending",
+  "Arriving",
+  "Travel after",
+  "Dietary",
+  "Passport",
+  "Questions",
+];
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
@@ -63,7 +81,7 @@ export default async function AdminDashboardPage() {
   if (error) {
     console.error("Failed to fetch RSVPs:", error);
     return (
-      <p className="text-center text-sm text-sage-deep">
+      <p className="text-center font-mono text-sm text-cocoa">
         Failed to load submissions. Please try again.
       </p>
     );
@@ -86,81 +104,45 @@ export default async function AdminDashboardPage() {
           { label: "Maybe", value: counts.maybe },
           { label: "No", value: counts.no },
         ].map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-[2px] border border-forest/10 bg-paper-deep px-5 py-4 text-center"
-          >
-            <p className="font-serif text-xs uppercase tracking-[0.25em] text-forest/50">
-              {stat.label}
-            </p>
-            <p className="font-heading mt-2 text-3xl text-forest">{stat.value}</p>
+          <div key={stat.label} className="border border-cocoa/15 bg-ivory px-5 py-4 text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-cocoa/60">{stat.label}</p>
+            <p className="font-display mt-2 text-4xl text-cocoa">{stat.value}</p>
           </div>
         ))}
       </div>
 
       {rows.length === 0 ? (
-        <p className="text-center text-forest/60">No submissions yet.</p>
+        <p className="text-center font-mono text-sm text-cocoa/70">No submissions yet.</p>
       ) : (
-        <div className="overflow-x-auto rounded-[2px] border border-forest/10">
-          <table className="w-full min-w-[800px] text-left text-sm">
+        <div className="overflow-x-auto border border-cocoa/15 bg-ivory">
+          <table className="w-full min-w-[1100px] text-left font-mono text-[0.8rem]">
             <thead>
-              <tr className="border-b border-forest/10 bg-paper-deep">
-                <th className="px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-forest/50">
-                  Date
-                </th>
-                <th className="px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-forest/50">
-                  Name
-                </th>
-                <th className="px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-forest/50">
-                  Email
-                </th>
-                <th className="px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-forest/50">
-                  Attending
-                </th>
-                <th className="px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-forest/50">
-                  Passport
-                </th>
-                <th className="px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-forest/50">
-                  Address
-                </th>
-                <th className="px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-forest/50">
-                  Note
-                </th>
+              <tr className="border-b border-cocoa/15 bg-sand/60">
+                {columns.map((c) => (
+                  <th key={c} className="px-4 py-3 text-[0.7rem] uppercase tracking-[0.15em] text-cocoa/60">
+                    {c}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-cocoa/80">
               {rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="border-b border-forest/5 last:border-0"
-                >
-                  <td className="px-4 py-3 whitespace-nowrap text-forest/70">
-                    {formatDate(row.created_at)}
-                  </td>
-                  <td className="px-4 py-3 font-serif text-forest">
-                    {row.name}
-                  </td>
-                  <td className="px-4 py-3 text-forest/70">{row.email}</td>
+                <tr key={row.id} className="border-b border-cocoa/10 align-top last:border-0">
+                  <td className="whitespace-nowrap px-4 py-3">{formatDate(row.created_at)}</td>
+                  <td className="px-4 py-3 font-medium text-cocoa">{row.name}</td>
+                  <td className="px-4 py-3">{row.email}</td>
                   <td className="px-4 py-3">
                     <span
-                      className={`inline-block rounded-full px-3 py-1 text-xs font-serif uppercase tracking-wider ${attendingStyle(row.attending)}`}
+                      className={`inline-block rounded-full px-3 py-1 text-[0.7rem] uppercase tracking-wider ${attendingStyle[row.attending]}`}
                     >
-                      {attendingLabel(row.attending)}
+                      {attendingLabel[row.attending]}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-forest/70">
-                    {row.passport_expires_before_2028 ? (
-                      <span className="text-sage-deep">Expires before 2028</span>
-                    ) : (
-                      "OK"
-                    )}
-                  </td>
-                  <td className="max-w-[200px] px-4 py-3 text-forest/70">
-                    {row.address ?? "—"}
-                  </td>
-                  <td className="max-w-[200px] px-4 py-3 text-forest/70">
-                    {row.note ?? "—"}
-                  </td>
+                  <td className="max-w-[160px] px-4 py-3">{row.arrival ?? "—"}</td>
+                  <td className="max-w-[180px] px-4 py-3">{row.travel_after ?? "—"}</td>
+                  <td className="max-w-[160px] px-4 py-3">{row.dietary ?? "—"}</td>
+                  <td className="whitespace-nowrap px-4 py-3">{passportSummary(row)}</td>
+                  <td className="max-w-[240px] px-4 py-3">{row.questions ?? row.note ?? "—"}</td>
                 </tr>
               ))}
             </tbody>
