@@ -3,7 +3,7 @@ import { Ballet, Caveat, Instrument_Serif, Roboto_Mono } from "next/font/google"
 import { couple, event, images } from "@/app/data/content";
 import "./globals.css";
 
-const previewPlaceAndDate = "Lake Como · October 6, 2027";
+const previewPlaceAndDate = "Lake Como · October 5, 2027";
 const pageTitle = `${couple.combined} — ${previewPlaceAndDate}`;
 const metaDescription = `The wedding of ${couple.combined} at ${event.venueName}, Lake Como — ${event.dateLong}. RSVP, travel, and schedule.`;
 

@@ -1,7 +1,7 @@
 /**
  * Centralized content for the wedding site.
  * Swap copy, dates, and image filenames here without touching components.
- * Items marked CONFIRM follow the move to October 6 and still need a final check.
+ * Items marked CONFIRM follow the wedding on Tuesday, October 5, 2027 and still need a final check.
  * Items marked PLACEHOLDER point at images that haven't been added yet; drop the file into
  * source-assets/v2, run `npm run assets`, or save it straight to public/assets/web/ with that name.
  */
@@ -17,8 +17,8 @@ export const couple = {
 
 export const event = {
   /** Lake Como is CEST (UTC+2) in early October. */
-  dateISO: "2027-10-06T15:00:00+02:00",
-  dateLong: "Wednesday, October 6, 2027",
+  dateISO: "2027-10-05T15:00:00+02:00",
+  dateLong: "Tuesday, October 5, 2027",
   venueName: "Relais Villa Vittoria",
   venueCity: "Laglio, Lake Como, Italy",
   // CONFIRM: swap for the villa's own site if you'd rather link there.
@@ -61,7 +61,7 @@ export const nav = {
 
 export const hero = {
   eyebrow: "The wedding of",
-  date: { month: "October the 6", suffix: "th", year: ", 2027" },
+  date: { month: "October the 5", suffix: "th", year: ", 2027" },
 };
 
 export const invitation = {
@@ -94,8 +94,7 @@ export const whyComo = {
 export const welcomeParty = {
   title: ["Welcome", "Party"],
   rows: [
-    // CONFIRM: moved from Monday October 4 with the wedding's move to October 6.
-    { label: "Date:", value: ["Tuesday October 5, 2027", "at 7:30PM"] },
+    { label: "Date:", value: ["Monday October 4, 2027", "at 7:30PM"] },
     { label: "Location:", value: ["Relais Villa Vittoria,", "Laglio, Lake Como, Italy"] },
     { label: "Theme:", value: ["A relaxed dinner by the pool with pizza and gelato"] },
   ],
@@ -123,12 +122,11 @@ export const transport = {
   },
   shuttle: {
     title: "Shuttle",
-    // CONFIRM: shuttle date moved from October 4 to October 5.
     body: [
       { text: "A shuttle will be provided from Milan to Lake Como " },
       { text: "by us", bold: true },
       { text: " — about a 30-minute ride to Relais Villa Vittoria on " },
-      { text: "October 5", bold: true },
+      { text: "October 4", bold: true },
       { text: ". Pick-up details will be shared closer to the date." },
     ],
     tip: "TIP: One thing no one warned us on how difficult transportation is to get in or around Lake Como. So keep that in mind when planning!",
@@ -229,9 +227,8 @@ export const accommodation = {
   },
   early: {
     title: "Want to arrive early?",
-    // CONFIRM: stay dates moved from October 4–6 to October 5–7.
     body: [
-      "Our exclusive wedding stay at Relais Villa Vittoria will be October 5-7, but if you are planning to arrive in Lake Como a little earlier, we would love for you to have the option to stay at the villa before our wedding week.",
+      "Our exclusive wedding stay at Relais Villa Vittoria will be October 4-6, but if you are planning to arrive in Lake Como a little earlier, we would love for you to have the option to stay at the villa before our wedding week.",
       "It is still a bit too early to arrange additional nights, so we will share more details on availability and booking approximately six months before the wedding.",
     ],
     emphasis:
@@ -348,7 +345,7 @@ export const europeDestinations: Destination[] = [
 
 export type ItineraryDay = { day: string; date: string; notes: string[] };
 
-// CONFIRM: shifted one day later so the wedding lands on Wednesday, October 6.
+// CONFIRM: wedding on Tuesday, October 5; welcome party Monday, October 4.
 export const itinerary = {
   month: "October",
   year: "2027",
@@ -356,14 +353,13 @@ export const itinerary = {
     { day: "Friday", date: "01", notes: ["Fly LAX → MILAN"] },
     { day: "Saturday", date: "02", notes: ["Arrive in Milan - Rest/Adjust to Jet Lag"] },
     { day: "Sunday", date: "03", notes: ["Spend the day in Milan w/ us! (your preference)"] },
-    { day: "Monday", date: "04", notes: ["Free Day in Milan"] },
     {
-      day: "Tuesday",
-      date: "05",
+      day: "Monday",
+      date: "04",
       notes: ["Provided Transportation Pick up in Milan → Lake Como", "Welcome Party"],
     },
-    { day: "Wednesday", date: "06", notes: ["Wedding Day"] },
-    { day: "Thursday", date: "07", notes: ["Free to leave Villa or continue traveling"] },
+    { day: "Tuesday", date: "05", notes: ["Wedding Day"] },
+    { day: "Wednesday", date: "06", notes: ["Free to leave Villa or continue traveling"] },
   ] as ItineraryDay[],
 };
 
@@ -385,6 +381,10 @@ export const faq: { left: FaqItem[]; right: FaqItem[] } = {
     },
   ],
   right: [
+    {
+      q: "What do I need to cover?",
+      a: "Guests are responsible for their own flights and accommodations. Once you arrive in Milan, Italy, we’ve got the transportation covered!",
+    },
     {
       q: "After the wedding, how will we get back?",
       a: "We’ve got you covered getting to the wedding! 🤍 For the ride back, we’ll need to know everyone’s plans after the celebration. More details will be shared closer to the date so we can coordinate transportation and make sure everyone gets back safely.",

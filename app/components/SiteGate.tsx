@@ -154,7 +154,7 @@ export default function SiteGate() {
 
       <div className="relative flex flex-1 flex-col items-center justify-center px-5 py-10 text-center">
         <p className="text-shadow-photo font-mono text-xs uppercase tracking-[0.22em] md:text-sm">
-          Lake Como · October 6, 2027
+          Lake Como · October 5, 2027
         </p>
 
         <h1 className="text-shadow-photo mt-6 flex max-w-[min(100%,42rem)] flex-nowrap items-center justify-center gap-x-[clamp(0.75rem,4vw,3rem)] text-[clamp(2.25rem,8vw,4.5rem)] leading-[1.05]">
