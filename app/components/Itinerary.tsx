@@ -29,7 +29,7 @@ export default function Itinerary() {
             <div className="hidden grid-cols-7 border border-ivory/70 md:grid">
               {itinerary.days.map((d) => (
                 <div
-                  key={d.day}
+                  key={`${d.day}-${d.date}`}
                   className="text-body-sm border-r border-ivory/70 bg-black/15 py-2.5 text-center font-mono uppercase tracking-[0.1em] text-ivory backdrop-blur-[2px] last:border-r-0"
                 >
                   {d.day}
@@ -37,10 +37,10 @@ export default function Itinerary() {
               ))}
               {itinerary.days.map((d) => (
                 <div
-                  key={d.date}
+                  key={`${d.day}-${d.date}`}
                   className="text-body-sm min-h-[9.5rem] border-r border-t border-olive/60 bg-ivory px-3 py-3 font-mono text-[#1f1d1a] last:border-r-0"
                 >
-                  <p className="font-bold">{d.date}</p>
+                  <p className="font-bold">{d.dateLabel ?? d.date}</p>
                   <ul className="ml-4 mt-5 list-disc space-y-0.5 leading-snug">
                     {d.notes.map((note) => (
                       <li key={note}>{note}</li>
@@ -53,9 +53,12 @@ export default function Itinerary() {
             {/* Mobile: stacked days */}
             <ol className="mx-3 divide-y divide-olive/30 border border-ivory/70 bg-ivory md:hidden">
               {itinerary.days.map((d) => (
-                <li key={d.date} className="grid grid-cols-[4.5rem_1fr] gap-3 px-4 py-3 font-mono text-[#1f1d1a]">
+                <li
+                  key={`${d.day}-${d.date}`}
+                  className="grid grid-cols-[4.5rem_1fr] gap-3 px-4 py-3 font-mono text-[#1f1d1a]"
+                >
                   <div>
-                    <p className="text-lg font-bold leading-none">{d.date}</p>
+                    <p className="text-lg font-bold leading-none">{d.dateLabel ?? d.date}</p>
                     <p className="mt-1 text-[0.6rem] uppercase tracking-[0.08em]">{d.day}</p>
                   </div>
                   <ul className="list-disc pl-4 text-[0.78rem] leading-snug">

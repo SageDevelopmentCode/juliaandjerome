@@ -125,10 +125,10 @@ export default function Rsvp() {
     <section id="rsvp" className="scroll-mt-16 border-t-[18px] border-sand bg-olive text-ivory">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-10 md:px-10 md:py-24">
         <h2 aria-label="RSVP" className="relative mx-auto flex items-center justify-center select-none">
-          <span aria-hidden className="text-rsvp-flourish font-script absolute -left-[0.3em] top-1/2 -translate-y-[56%] leading-none">
+          <span aria-hidden className="text-rsvp-flourish font-script absolute -left-[0.45em] top-1/2 -translate-y-[56%] leading-none">
             R
           </span>
-          <span aria-hidden className="text-rsvp-lockup font-display relative pl-[0.55em]">
+          <span aria-hidden className="text-rsvp-lockup font-display relative pl-[1.15em]">
             SVP
           </span>
         </h2>

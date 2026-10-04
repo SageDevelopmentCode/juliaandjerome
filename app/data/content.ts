@@ -343,16 +343,22 @@ export const europeDestinations: Destination[] = [
   },
 ];
 
-export type ItineraryDay = { day: string; date: string; notes: string[] };
+export type ItineraryDay = { day: string; date: string; dateLabel?: string; notes: string[] };
 
-// CONFIRM: wedding on Tuesday, October 5; welcome party Monday, October 4.
+// CONFIRM: Sep 30 – Oct 6 week; wedding Tuesday, October 5; welcome party Monday, October 4.
 export const itinerary = {
-  month: "October",
+  month: "September – October",
   year: "2027",
   days: [
-    { day: "Friday", date: "01", notes: ["Fly LAX → MILAN"] },
-    { day: "Saturday", date: "02", notes: ["Arrive in Milan - Rest/Adjust to Jet Lag"] },
-    { day: "Sunday", date: "03", notes: ["Spend the day in Milan w/ us! (your preference)"] },
+    {
+      day: "Thursday",
+      date: "30",
+      dateLabel: "Sep 30",
+      notes: ["Fly LAX → MILAN"],
+    },
+    { day: "Friday", date: "01", notes: ["Arrive in Milan - Rest/Adjust to Jet Lag"] },
+    { day: "Saturday", date: "02", notes: ["Spend the day in Milan w/ us! (your preference)"] },
+    { day: "Sunday", date: "03", notes: ["Free day in Milan"] },
     {
       day: "Monday",
       date: "04",
