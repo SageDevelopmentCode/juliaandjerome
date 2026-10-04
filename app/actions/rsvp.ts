@@ -1,7 +1,9 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { hasSiteAccess } from "@/lib/site-gate";
 
 const optionalText = z.string().trim().max(2000).optional();
 
@@ -27,6 +29,14 @@ export type RsvpResult =
 const orNull = (value: string | undefined) => value?.trim() || null;
 
 export async function submitRsvp(data: RsvpInput): Promise<RsvpResult> {
+  const cookieStore = await cookies();
+  if (!hasSiteAccess(cookieStore)) {
+    return {
+      success: false,
+      error: "Please enter the site password before submitting your RSVP.",
+    };
+  }
+
   const parsed = rsvpSchema.safeParse(data);
   if (!parsed.success) {
     return { success: false, error: "Invalid form data. Please check your entries." };
