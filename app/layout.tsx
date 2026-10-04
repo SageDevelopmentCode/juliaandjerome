@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Ballet, Caveat, Instrument_Serif, Roboto_Mono } from "next/font/google";
+import { couple, event, images } from "@/app/data/content";
 import "./globals.css";
+
+const previewPlaceAndDate = "Lake Como · October 6, 2027";
+const pageTitle = `${couple.combined} — ${previewPlaceAndDate}`;
+const metaDescription = `The wedding of ${couple.combined} at ${event.venueName}, Lake Como — ${event.dateLong}. RSVP, travel, and schedule.`;
 
 // Stand-in for Burgues Script. To use the real font, drop the file in app/fonts/ and replace with:
 // localFont({ src: "./fonts/BurguesScript.woff2", variable: "--font-script", display: "swap" })
@@ -32,14 +37,29 @@ const hand = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Julia & Jerome — Lake Como, October 6, 2027",
-  description:
-    "The wedding of Julia & Jerome at Relais Villa Vittoria, Lake Como. Schedule, travel, dress code, and RSVP.",
+  metadataBase: new URL("https://juliaandjerome.com"),
+  title: pageTitle,
+  description: metaDescription,
+  icons: {
+    icon: [
+      { url: "/favicon/favicon.ico", sizes: "any" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/favicon/apple-touch-icon.png",
+  },
+  manifest: "/favicon/site.webmanifest",
   openGraph: {
-    title: "Julia & Jerome — Lake Como, October 6, 2027",
-    description: "The wedding of Julia & Jerome at Relais Villa Vittoria, Lake Como.",
+    title: couple.combined,
+    description: previewPlaceAndDate,
     type: "website",
-    images: ["/assets/web/hero-boat.jpg"],
+    images: [images.hero],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: couple.combined,
+    description: previewPlaceAndDate,
+    images: [images.hero],
   },
 };
 
