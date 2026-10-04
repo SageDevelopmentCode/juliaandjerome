@@ -1,0 +1,15 @@
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"ready","sessionUnlocked":false,"paused":false,"muted":true,"readyState":4},"hypothesisId":"A","timestamp":1791100341746}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"ready","sessionUnlocked":true,"paused":true,"muted":false,"readyState":4},"hypothesisId":"A","timestamp":1791100341749}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"paused rely on html autoplay","data":{"source":"ready"},"hypothesisId":"D","timestamp":1791100341749}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"ready","sessionUnlocked":false,"paused":false,"muted":true,"readyState":4},"hypothesisId":"A","timestamp":1791100342239}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"ready","sessionUnlocked":true,"paused":true,"muted":false,"readyState":4},"hypothesisId":"A","timestamp":1791100342239}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"paused rely on html autoplay","data":{"source":"ready"},"hypothesisId":"D","timestamp":1791100342240}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"ready","sessionUnlocked":true,"paused":true,"muted":true,"readyState":4},"hypothesisId":"A","timestamp":1791100346868}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"paused rely on html autoplay","data":{"source":"ready"},"hypothesisId":"D","timestamp":1791100346868}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"music button toggle","data":{"needsUnmute":true,"audible":false,"paused":true,"muted":true,"volume":1},"hypothesisId":"H2","timestamp":1791100350546}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"unmuteFromGestureSync","data":{"source":"music-button","branch":"paused-play"},"hypothesisId":"E","timestamp":1791100350547}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"playing","sessionUnlocked":true,"paused":false,"muted":true,"readyState":4},"hypothesisId":"A","timestamp":1791100350555}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"unmuteInPlace","data":{"source":"session-playing","paused":false},"hypothesisId":"C","timestamp":1791100350556}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"music button toggle","data":{"needsUnmute":false,"audible":true,"paused":false,"muted":false,"volume":0.35},"hypothesisId":"H2","timestamp":1791100354115}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"canplay","sessionUnlocked":false,"paused":false,"muted":true,"readyState":4},"hypothesisId":"A","timestamp":1791100360759}
+{"sessionId":"b94dc2","location":"BackgroundMusic.tsx","message":"syncPlaybackState","data":{"source":"playing","sessionUnlocked":false,"paused":false,"muted":true,"readyState":4},"hypothesisId":"A","timestamp":1791100360759}

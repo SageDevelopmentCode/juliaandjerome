@@ -15,6 +15,40 @@
 
   /* Easing */
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Type scale (~5% smaller than component clamps) */
+  --text-hero: clamp(2.5rem, 8.1vw, 7.1rem);
+  --text-section-xl: clamp(3.2rem, 6.7vw, 5.3rem);
+  --text-section-xl-tall: clamp(3.4rem, 8.1vw, 6.2rem);
+  --text-section-xl-dress: clamp(3.2rem, 6.5vw, 5.1rem);
+  --text-section: clamp(2rem, 5vw, 4.2rem);
+  --text-section-sm: clamp(1.7rem, 4.4vw, 3.2rem);
+  --text-section-transport: clamp(2.1rem, 5.1vw, 3.6rem);
+  --text-display-lg: clamp(2.85rem, 5.5vw, 4.2rem);
+  --text-display-presence: clamp(2.65rem, 5.3vw, 4.2rem);
+  --text-presence-word: clamp(2.5rem, 4.9vw, 3.8rem);
+  --text-display-md: clamp(1.9rem, 3.4vw, 2.55rem);
+  --text-display-md-wide: clamp(2.5rem, 4.4vw, 3.2rem);
+  --text-display-sm: clamp(1.7rem, 3.8vw, 2.85rem);
+  --text-display-time: clamp(1.7rem, 2.6vw, 2.2rem);
+  --text-display-card: clamp(1.6rem, 2.5vw, 2rem);
+  --text-display-card-lg: clamp(1.6rem, 2.7vw, 2.1rem);
+  --text-until: clamp(1.5rem, 3.4vw, 2.5rem);
+  --text-script-signature: clamp(1.8rem, 4.75vw, 3rem);
+  --text-soft-rsvp: clamp(2.85rem, 6.1vw, 4.75rem);
+  --text-soft-rsvp-sub: clamp(1.8rem, 4.2vw, 3.2rem);
+  --text-invite-title: clamp(1.9rem, 6.1vw, 3.7rem);
+  --text-invite-body: clamp(0.57rem, 1.3vw, 0.76rem);
+  --text-itinerary-meta: clamp(0.95rem, 2.1vw, 1.5rem);
+  --text-itinerary-title: clamp(2.1rem, 4.4vw, 3.4rem);
+  --text-rsvp-flourish: clamp(6.65rem, 16.15vw, 12.8rem);
+  --text-rsvp-lockup: clamp(4.75rem, 10.45vw, 8.2rem);
+  --text-rsvp-thanks: clamp(3.55rem, 5.7vw, 3.55rem);
+  --text-body-sm: 0.74rem;
+  --text-body: 0.9rem;
+  --text-hand-tip: clamp(1.47rem, 2.5vw, 1.62rem);
+  --text-map-label: 2.47cqw;
+  --text-map-label-sub: 0.81cqw;
 }
 
 :root {
@@ -108,6 +142,35 @@ body {
   scrollbar-width: none;
 }
 
+/* Infinite photo strip. Track is two identical halves, so -50% loops seamlessly. */
+@keyframes photo-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.photo-marquee {
+  animation: photo-marquee 46s linear infinite;
+}
+
+@keyframes music-bar {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.music-wave-bar {
+  transform-origin: bottom;
+  animation: music-bar 0.75s ease-in-out infinite;
+}
+
 /* Legibility on photo backgrounds */
 .text-shadow-photo {
   text-shadow:
@@ -118,5 +181,12 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .photo-marquee {
+    animation: none;
+  }
+  .music-wave-bar {
+    animation: none;
+    transform: scaleY(0.65);
   }
 }

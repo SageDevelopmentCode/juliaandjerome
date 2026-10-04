@@ -42,7 +42,7 @@ export default function Accommodation() {
           <InitialTitle
             initial="A"
             rest="ccommodation"
-            className="text-[clamp(2.3rem,5vw,3.6rem)] md:-rotate-90 md:whitespace-nowrap"
+            className="text-section md:-rotate-90 md:whitespace-nowrap"
             initialClassName="text-[2em]"
           />
         </Reveal>
@@ -58,7 +58,7 @@ export default function Accommodation() {
               <br />
               {villa.title[1]}
             </h3>
-            <p className="mt-4 -rotate-3 text-center font-mono text-[0.95rem] leading-snug">{villa.body}</p>
+            <p className="text-body mt-4 -rotate-3 text-center font-mono leading-snug">{villa.body}</p>
             <p className="font-display mt-6 text-center text-base leading-tight">
               {villa.checkIn}
               <br />
@@ -76,7 +76,7 @@ export default function Accommodation() {
               <br />
               {included.title[1]}
             </h3>
-            <ul className="mt-4 -rotate-3 list-disc self-start pl-6 font-mono text-[0.9rem] leading-snug">
+            <ul className="text-body mt-4 -rotate-3 list-disc self-start pl-6 font-mono leading-snug">
               {included.items.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -93,8 +93,8 @@ export default function Accommodation() {
         </Reveal>
 
         <Reveal delay={0.15} className="text-center">
-          <h3 className="font-display text-[clamp(1.7rem,2.8vw,2.2rem)]">{early.title}</h3>
-          <div className="mt-3 font-mono text-[0.78rem] leading-relaxed">
+          <h3 className="font-display text-display-card-lg">{early.title}</h3>
+          <div className="text-body-sm mt-3 font-mono leading-relaxed">
             {early.body.map((p) => (
               <p key={p}>{p}</p>
             ))}

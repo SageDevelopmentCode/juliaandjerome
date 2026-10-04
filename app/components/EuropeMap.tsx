@@ -1,3 +1,5 @@
+"use client";
+
 import DestinationMap, { type MapLayout } from "@/app/components/DestinationMap";
 import Reveal from "@/app/components/Reveal";
 import { InitialTitle } from "@/app/components/ui";
@@ -53,7 +55,7 @@ export default function EuropeMap() {
             <InitialTitle
               initial="B"
               rest="eyond Italy"
-              className="text-[clamp(2.1rem,5.3vw,4.4rem)]"
+              className="text-section"
               initialClassName="text-[1.8em]"
             />
           }
@@ -73,7 +75,7 @@ export default function EuropeMap() {
                   style={{ left: pct(italy.x, 1024), top: pct(italy.y, 545), height: pct(500 - italy.y, 545) }}
                 />
                 <p
-                  className="font-display absolute z-10 -translate-x-1/2 text-[2.6cqw]"
+                  className="font-display text-map-label absolute z-10 -translate-x-1/2"
                   style={{ left: pct(italy.x, 1024), top: pct(502, 545) }}
                 >
                   Italy

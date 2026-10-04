@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Reveal from "@/app/components/Reveal";
+import { InitialTitle } from "@/app/components/ui";
 import { cn } from "@/lib/utils";
 import type { DressCard, DressCode as DressCodeData, Outfit } from "@/app/data/content";
 
@@ -24,7 +25,7 @@ function Swatches({ colors }: { colors: string[] }) {
 function Card({ card, label }: { card: DressCard; label: string }) {
   return (
     <div className="flex w-full max-w-[20rem] flex-col items-center rounded-[3.25rem] bg-sand px-6 pb-8 pt-8 text-cocoa shadow-[0_18px_40px_-20px_rgba(0,0,0,0.5)] md:max-w-none">
-      <h3 className="font-display text-[clamp(1.7rem,2.6vw,2.1rem)]">{card.title}</h3>
+      <h3 className="font-display text-display-card">{card.title}</h3>
       <div className="mt-3">
         <Swatches colors={card.swatches} />
       </div>
@@ -68,7 +69,12 @@ export default function DressCode({ data, titleTone }: { data: DressCodeData; ti
             titleTone === "ivory" ? "text-ivory" : "text-cocoa"
           )}
         >
-          <h2 className="font-script text-[clamp(3.4rem,6.8vw,5.4rem)] leading-[0.9]">Dress Code</h2>
+          <InitialTitle
+            as="h2"
+            initial="D"
+            rest="ress Code"
+            className="text-section-xl-dress leading-[0.9]"
+          />
           <p className="-mt-1 font-mono text-sm uppercase tracking-[0.05em] md:text-base">{data.label}</p>
         </Reveal>
 

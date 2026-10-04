@@ -1,5 +1,5 @@
 import Reveal from "@/app/components/Reveal";
-import { BackdropPhoto } from "@/app/components/ui";
+import { BackdropPhoto, ScriptInitialWord } from "@/app/components/ui";
 import { images, rsvp } from "@/app/data/content";
 
 function Contact({ name, phone, align }: { name: string; phone: string; align: "left" | "right" }) {
@@ -23,15 +23,19 @@ export default function SoftRsvp() {
     <section className="bg-sand text-[#2e2b10]">
       <div className="mx-auto max-w-6xl px-5 pb-16 pt-14 md:px-10 md:pt-20">
         <Reveal>
-          <h2 className="relative mx-auto flex w-fit items-end text-olive">
-            <span className="font-script relative z-10 -mr-3 text-[clamp(3rem,6.4vw,5rem)] leading-[0.7]">
-              Soft
+          <h2 className="text-soft-rsvp relative mx-auto flex w-fit flex-col items-center gap-2 text-center leading-[0.85] text-olive md:flex-row md:items-end md:gap-0 md:text-left md:leading-[0.7]">
+            <ScriptInitialWord
+              word="Soft"
+              className="relative z-10 justify-center md:-mr-3"
+              initialClassName="text-[1.9em]"
+            />
+            <span className="font-display text-soft-rsvp-sub max-w-[min(100%,20rem)] md:max-w-none">
+              RSVPs due by {rsvp.dueBy}
             </span>
-            <span className="font-display text-[clamp(1.9rem,4.4vw,3.4rem)]">RSVPs due by {rsvp.dueBy}</span>
             <svg
               aria-hidden
               viewBox="0 0 300 20"
-              className="absolute -bottom-3 right-0 w-[60%] text-olive"
+              className="relative h-4 w-full max-w-xs text-olive md:absolute md:-bottom-3 md:right-0 md:h-auto md:max-w-none md:w-[60%]"
               preserveAspectRatio="none"
             >
               <path d="M2 16 C 80 4, 200 2, 298 6" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
@@ -56,7 +60,16 @@ export default function SoftRsvp() {
         </div>
 
         <p className="mx-auto mt-5 max-w-md text-center font-mono text-sm leading-relaxed">
-          Follow us on @:{rsvp.instagram} {rsvp.followNote}
+          Follow us on{" "}
+          <a
+            href={rsvp.instagramUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-4 transition-opacity hover:opacity-70"
+          >
+            {rsvp.instagram}
+          </a>{" "}
+          {rsvp.followNote}
         </p>
       </div>
     </section>

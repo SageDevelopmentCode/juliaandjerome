@@ -8,6 +8,7 @@ const optionalText = z.string().trim().max(2000).optional();
 const rsvpSchema = z.object({
   name: z.string().trim().min(2),
   email: z.string().trim().email(),
+  address: optionalText,
   attending: z.enum(["yes", "maybe", "no"]),
   arrival: optionalText,
   travelAfter: optionalText,
@@ -37,6 +38,7 @@ export async function submitRsvp(data: RsvpInput): Promise<RsvpResult> {
   const { error } = await supabase.from("rsvp_responses").insert({
     name: d.name,
     email: d.email,
+    address: orNull(d.address),
     attending: d.attending,
     arrival: orNull(d.arrival),
     travel_after: orNull(d.travelAfter),

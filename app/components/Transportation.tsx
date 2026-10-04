@@ -79,7 +79,7 @@ function TipNote({
   return (
     <div className={cn("relative mx-auto mt-8 w-full max-w-[19rem]", className)}>
       <div className="relative bg-[#f6f3ec] px-6 pb-14 pt-12 shadow-[2px_6px_16px_-6px_rgba(60,40,20,0.45)]">
-        <p className="font-hand text-[1.55rem] leading-[1.15] text-[#1f1d1a] md:text-[1.7rem]">
+        <p className="font-hand text-hand-tip leading-[1.15] text-[#1f1d1a]">
           {text}
         </p>
       </div>
@@ -103,17 +103,17 @@ export default function Transportation() {
           <InitialTitle
             initial="T"
             rest="ransportation"
-            className="text-[clamp(2.2rem,5.4vw,3.8rem)]"
+            className="text-section-transport"
             initialClassName="text-[2.1em]"
           />
         </Reveal>
 
         <div className="mt-12 grid gap-14 md:mt-14 md:grid-cols-2 md:gap-20">
           <Reveal>
-            <h3 className="font-display text-center text-[clamp(2.6rem,4.6vw,3.4rem)] md:-translate-x-12">
+            <h3 className="font-display text-display-md-wide text-center md:-translate-x-12">
               {flights.title}
             </h3>
-            <div className="mt-5 font-mono text-[0.92rem] leading-relaxed md:pl-0">
+            <div className="text-body mt-5 font-mono leading-relaxed md:pl-0">
               <p>{flights.route}</p>
               <ul className="ml-6 mt-1 list-disc space-y-1 md:max-w-[17rem]">
                 {flights.bullets.map((b) => (
@@ -125,10 +125,10 @@ export default function Transportation() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h3 className="font-display text-center text-[clamp(2.6rem,4.6vw,3.4rem)]">
+            <h3 className="font-display text-display-md-wide text-center">
               {shuttle.title}
             </h3>
-            <ul className="ml-6 mt-6 list-disc font-mono text-[0.92rem] leading-relaxed md:max-w-[21rem]">
+            <ul className="text-body ml-6 mt-6 list-disc font-mono leading-relaxed md:max-w-[21rem]">
               <li>
                 {shuttle.body.map((part) =>
                   part.bold ? <strong key={part.text}>{part.text}</strong> : part.text

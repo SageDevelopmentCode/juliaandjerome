@@ -32,6 +32,8 @@ export const images = {
   inviteBg: web("invite-lake.jpg"),
   video: web("super8.mp4"),
   videoPoster: web("super8-poster.jpg"),
+  presenceVideo: web("presence.mp4"),
+  presencePoster: web("presence-poster.jpg"),
   welcomeParty: web("welcome-party.jpg"),
   timelineBg: web("timeline-bg.jpg"),
   dressGirlsBg: web("dress-girls-bg.jpg"),
@@ -40,7 +42,6 @@ export const images = {
   villaAerial: web("villa-aerial.jpg"),
   italyMap: web("map-italy.svg"),
   europeMap: web("map-europe.svg"),
-  // PLACEHOLDER: yellow-wall kiss photo behind the itinerary.
   itineraryBg: web("itinerary-bg.jpg"),
   presence: web("presence-stairs.jpg"),
   rsvpPhoto: web("rsvp-boat.jpg"),
@@ -401,7 +402,7 @@ export const rsvp = {
     { name: "Julia Cecilia", phone: "(562) 457-7577" },
     { name: "Jerome Tadeo", phone: "(626) 278-7329" },
   ],
-  // PLACEHOLDER: fill in the Instagram handle.
-  instagram: "___",
+  instagram: "@juliaandjerome27",
+  instagramUrl: "https://www.instagram.com/juliaandjerome27/",
   followNote: "for more wedding updates and travel tips as we count down to October 2027!",
 };

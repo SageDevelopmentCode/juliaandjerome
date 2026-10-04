@@ -54,6 +54,7 @@ const columns = [
   "Date",
   "Name",
   "Email",
+  "Address",
   "Attending",
   "Arriving",
   "Travel after",
@@ -131,6 +132,7 @@ export default async function AdminDashboardPage() {
                   <td className="whitespace-nowrap px-4 py-3">{formatDate(row.created_at)}</td>
                   <td className="px-4 py-3 font-medium text-cocoa">{row.name}</td>
                   <td className="px-4 py-3">{row.email}</td>
+                  <td className="max-w-[200px] px-4 py-3">{row.address ?? "—"}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-block rounded-full px-3 py-1 text-[0.7rem] uppercase tracking-wider ${attendingStyle[row.attending]}`}

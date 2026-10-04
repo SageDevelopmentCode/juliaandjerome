@@ -4,8 +4,8 @@ import { faq, type FaqItem } from "@/app/data/content";
 function Item({ item }: { item: FaqItem }) {
   return (
     <div className="text-center">
-      <h3 className="font-mono text-[1.15rem] font-medium leading-tight md:text-[1.35rem]">{item.q}</h3>
-      <p className="mt-2 font-mono text-[0.78rem] leading-relaxed md:text-[0.82rem]">{item.a}</p>
+      <h3 className="font-mono text-base font-medium leading-tight md:text-lg">{item.q}</h3>
+      <p className="text-body-sm mt-2 font-mono leading-relaxed md:text-body">{item.a}</p>
     </div>
   );
 }
@@ -15,7 +15,7 @@ export default function Faq() {
     <section id="faq" className="scroll-mt-16 bg-sand text-cocoa">
       <div className="mx-auto max-w-6xl px-5 pb-20 pt-16 md:px-12 md:pt-20">
         <Reveal>
-          <h2 className="font-display mx-auto w-fit border-b-[3px] border-cocoa pb-0.5 text-[clamp(3rem,5.8vw,4.4rem)] leading-[0.85]">
+          <h2 className="font-display text-display-lg mx-auto w-fit border-b-[3px] border-cocoa pb-0.5 leading-[0.85]">
             FAQs
           </h2>
         </Reveal>

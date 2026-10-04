@@ -5,6 +5,7 @@ import { useForm, useWatch, type UseFormRegisterReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AnimatePresence, motion } from "framer-motion";
+import { InitialTitle } from "@/app/components/ui";
 import { cn, EASE_SOFT } from "@/lib/utils";
 import { couple, event, rsvp } from "@/app/data/content";
 import { submitRsvp } from "@/app/actions/rsvp";
@@ -12,6 +13,7 @@ import { submitRsvp } from "@/app/actions/rsvp";
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your name(s)"),
   email: z.string().trim().email("Please enter a valid email"),
+  address: z.string().optional(),
   attending: z.enum(["yes", "maybe", "no"], { message: "Please choose an option" }),
   arrival: z.string().optional(),
   travelAfter: z.string().optional(),
@@ -24,7 +26,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const field =
-  "mt-2 w-full border-0 border-b border-ivory/35 bg-transparent pb-1.5 pt-1 font-mono text-[0.95rem] text-ivory placeholder:text-ivory/35 transition-colors focus:border-ivory focus:outline-none";
+  "text-body mt-2 w-full border-0 border-b border-ivory/35 bg-transparent pb-1.5 pt-1 font-mono text-ivory placeholder:text-ivory/35 transition-colors focus:border-ivory focus:outline-none";
 
 function googleCalendarUrl() {
   const start = new Date(event.dateISO);
@@ -55,14 +57,14 @@ function Question({
 }) {
   return (
     <div className="grid grid-cols-[1.6rem_1fr]">
-      <span className="pt-px font-mono text-[0.95rem] md:text-base">{n}.</span>
+      <span className="text-body pt-px font-mono md:text-base">{n}.</span>
       <div>
         {htmlFor ? (
-          <label htmlFor={htmlFor} className="font-mono text-[0.95rem] md:text-base">
+          <label htmlFor={htmlFor} className="text-body font-mono md:text-base">
             {label}
           </label>
         ) : (
-          <p className="font-mono text-[0.95rem] md:text-base">{label}</p>
+          <p className="text-body font-mono md:text-base">{label}</p>
         )}
         {children}
         {error && <p className="mt-1.5 font-mono text-xs text-[#f2c9b8]">{error}</p>}
@@ -85,7 +87,7 @@ function Choice({
   return (
     <label
       className={cn(
-        "flex cursor-pointer items-start gap-3 rounded-sm border px-3 py-2 font-mono text-[0.9rem] transition-colors",
+        "text-body flex cursor-pointer items-start gap-3 rounded-sm border px-3 py-2 font-mono transition-colors",
         selected ? "border-ivory bg-ivory text-olive" : "border-ivory/25 hover:border-ivory/60"
       )}
     >
@@ -123,10 +125,10 @@ export default function Rsvp() {
     <section id="rsvp" className="scroll-mt-16 border-t-[18px] border-sand bg-olive text-ivory">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-10 md:px-10 md:py-24">
         <h2 aria-label="RSVP" className="relative mx-auto flex items-center justify-center select-none">
-          <span aria-hidden className="font-script absolute -left-[0.3em] top-1/2 -translate-y-[56%] text-[clamp(7rem,17vw,13.5rem)] leading-none">
+          <span aria-hidden className="text-rsvp-flourish font-script absolute -left-[0.3em] top-1/2 -translate-y-[56%] leading-none">
             R
           </span>
-          <span aria-hidden className="font-display relative pl-[0.55em] text-[clamp(5rem,11vw,8.6rem)]">
+          <span aria-hidden className="text-rsvp-lockup font-display relative pl-[0.55em]">
             SVP
           </span>
         </h2>
@@ -141,7 +143,12 @@ export default function Rsvp() {
               transition={{ duration: 0.7, ease: EASE_SOFT }}
               className="text-center md:text-left"
             >
-              <p className="font-script text-6xl">Thank you</p>
+              <InitialTitle
+                as="span"
+                initial="T"
+                rest="hank you"
+                className="text-rsvp-thanks justify-center md:justify-start"
+              />
               <p className="mt-5 font-mono text-sm leading-relaxed">
                 Your soft RSVP has been received. We&apos;ll be in touch with more details as the
                 date gets closer. We can&apos;t wait to celebrate with you in Lake Como!
@@ -191,7 +198,21 @@ export default function Rsvp() {
                 />
               </Question>
 
-              <Question n={3} label="Are you thinking of joining us at Lake Como?" error={errors.attending?.message}>
+              <Question
+                n={3}
+                label="Mailing address (so we can send your invitation):"
+                htmlFor="rsvp-address"
+              >
+                <input
+                  id="rsvp-address"
+                  {...register("address")}
+                  className={field}
+                  autoComplete="street-address"
+                  placeholder="Street, city, state, ZIP"
+                />
+              </Question>
+
+              <Question n={4} label="Are you thinking of joining us at Lake Como?" error={errors.attending?.message}>
                 <div className="mt-3 space-y-2">
                   <Choice value="yes" selected={attending === "yes"} register={register("attending")}>
                     <span aria-hidden>💚</span> Yes — we’re hoping to be there!
@@ -205,20 +226,20 @@ export default function Rsvp() {
                 </div>
               </Question>
 
-              <Question n={4} label="When are you thinking of arriving?" htmlFor="rsvp-arrival">
+              <Question n={5} label="When are you thinking of arriving?" htmlFor="rsvp-arrival">
                 <input id="rsvp-arrival" {...register("arrival")} className={field} placeholder="e.g. Saturday, October 2" />
               </Question>
 
-              <Question n={5} label="Are you planning to travel anywhere after the wedding?" htmlFor="rsvp-after">
+              <Question n={6} label="Are you planning to travel anywhere after the wedding?" htmlFor="rsvp-after">
                 <input id="rsvp-after" {...register("travelAfter")} className={field} placeholder="e.g. Rome & the Amalfi Coast" />
               </Question>
 
-              <Question n={6} label="Dietary Requirements?" htmlFor="rsvp-dietary">
+              <Question n={7} label="Dietary Requirements?" htmlFor="rsvp-dietary">
                 <input id="rsvp-dietary" {...register("dietary")} className={field} placeholder="Allergies, vegetarian, etc." />
               </Question>
 
               <Question
-                n={7}
+                n={8}
                 label="Do you currently have a valid passport? When does your passport expire?"
                 error={errors.hasValidPassport?.message}
               >
@@ -242,7 +263,7 @@ export default function Rsvp() {
               </Question>
 
               <Question
-                n={8}
+                n={9}
                 label="What questions do you have about the wedding or traveling to Italy? We'd love to help!"
                 htmlFor="rsvp-questions"
               >

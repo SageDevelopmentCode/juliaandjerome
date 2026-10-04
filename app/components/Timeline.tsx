@@ -9,7 +9,7 @@ export default function Timeline() {
         <InitialTitle
           initial="W"
           rest="edding Day Timeline"
-          className="text-[clamp(1.8rem,4.6vw,3.4rem)]"
+          className="text-section-sm"
         />
       </Reveal>
 
@@ -32,8 +32,8 @@ export default function Timeline() {
                 />
               )}
               <span aria-hidden className="relative z-10 h-[2.1rem] w-[2.1rem] rounded-full bg-ivory" />
-              <p className="font-display mt-4 text-[clamp(1.8rem,2.7vw,2.3rem)]">{item.time}</p>
-              <p className="mt-2 max-w-[8.5rem] font-mono text-[0.68rem] leading-snug">
+              <p className="font-display text-display-time mt-4">{item.time}</p>
+              <p className="text-body-sm mt-2 max-w-[8.5rem] font-mono leading-snug">
                 {item.label}
               </p>
             </li>

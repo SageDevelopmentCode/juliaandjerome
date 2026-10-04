@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Reveal from "@/app/components/Reveal";
+import { InitialTitle } from "@/app/components/ui";
 import { images, welcomeParty } from "@/app/data/content";
 
 export default function WelcomeParty() {
@@ -17,18 +18,28 @@ export default function WelcomeParty() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <h2 className="font-script text-center text-[clamp(3.4rem,7vw,5.6rem)] leading-[0.82]">
-            <span className="block -translate-x-[0.4em]">{welcomeParty.title[0]}</span>
-            <span className="block translate-x-[0.3em]">{welcomeParty.title[1]}</span>
+          <h2 className="text-section-xl text-center leading-[0.82]">
+            <InitialTitle
+              as="span"
+              initial={welcomeParty.title[0][0]}
+              rest={welcomeParty.title[0].slice(1)}
+              className="block -translate-x-[0.4em] justify-center"
+            />
+            <InitialTitle
+              as="span"
+              initial={welcomeParty.title[1][0]}
+              rest={welcomeParty.title[1].slice(1)}
+              className="block translate-x-[0.3em] justify-center"
+            />
           </h2>
 
           <dl className="mt-10 space-y-7 md:mt-14">
             {welcomeParty.rows.map((row) => (
               <div key={row.label} className="grid grid-cols-[auto_1fr] items-center gap-6">
-                <dt className="font-display min-w-[8.5rem] text-[clamp(2rem,3.6vw,2.7rem)]">
+                <dt className="font-display text-display-md min-w-[8.5rem]">
                   {row.label}
                 </dt>
-                <dd className="text-center font-mono text-[0.8rem] leading-relaxed md:text-[0.95rem]">
+                <dd className="text-body-sm text-center font-mono leading-relaxed md:text-body">
                   {row.value.map((line) => (
                     <span key={line} className="block">
                       {line}

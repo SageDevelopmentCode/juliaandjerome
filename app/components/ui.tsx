@@ -22,6 +22,42 @@ export function Tint({
   );
 }
 
+const scriptInitialClass =
+  "font-script relative z-10 -mr-[0.12em] text-[1.9em] leading-[0.6]";
+
+/** First letter in flourish script; remainder in display caps or italic name style. */
+export function ScriptInitialWord({
+  word,
+  variant = "title",
+  className,
+  initialClassName,
+  restClassName,
+}: {
+  word: string;
+  variant?: "title" | "name";
+  className?: string;
+  initialClassName?: string;
+  restClassName?: string;
+}) {
+  if (!word) return null;
+  const initial = word[0];
+  const rest = word.slice(1);
+
+  return (
+    <span className={cn("inline-flex items-end", className)}>
+      <span className={cn(scriptInitialClass, initialClassName)}>{initial}</span>
+      <span
+        className={cn(
+          variant === "name" ? "font-display normal-case italic leading-none" : "font-display",
+          restClassName
+        )}
+      >
+        {rest}
+      </span>
+    </span>
+  );
+}
+
 /** Heading where the first letter is a large flourish script and the rest is condensed caps. */
 export function InitialTitle({
   initial,
@@ -34,18 +70,11 @@ export function InitialTitle({
   rest: string;
   className?: string;
   initialClassName?: string;
-  as?: "h2" | "h3";
+  as?: "h2" | "h3" | "span" | "p";
 }) {
   return (
     <Tag className={cn("flex items-end justify-center leading-none", className)}>
-      <span
-        className={cn(
-          "font-script relative z-10 -mr-[0.12em] text-[1.9em] leading-[0.6]",
-          initialClassName
-        )}
-      >
-        {initial}
-      </span>
+      <span className={cn(scriptInitialClass, initialClassName)}>{initial}</span>
       <span className="font-display">{rest}</span>
     </Tag>
   );

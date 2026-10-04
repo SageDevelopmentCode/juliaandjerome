@@ -42,7 +42,7 @@ export default function Countdown({ className }: { className?: string }) {
         <Fragment key={u.label}>
           {i > 0 && <span aria-hidden className="mx-3 w-px bg-ivory/40 md:mx-6" />}
           <div className="flex min-w-[3.2rem] flex-col items-center md:min-w-[4.5rem]">
-            <span className="font-display text-[clamp(1.8rem,4vw,3rem)] leading-none tabular-nums">
+            <span className="font-display text-display-sm leading-none tabular-nums">
               {u.value === null ? "--" : String(u.value).padStart(2, "0")}
             </span>
             <span className="mt-1.5 font-mono text-[0.55rem] uppercase tracking-[0.12em] md:text-[0.7rem]">

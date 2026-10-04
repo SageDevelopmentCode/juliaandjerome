@@ -1,3 +1,4 @@
+import BackgroundMusic from "@/app/components/BackgroundMusic";
 import Nav from "@/app/components/Nav";
 import Hero from "@/app/components/Hero";
 import Invitation from "@/app/components/Invitation";
@@ -23,6 +24,7 @@ export default function Home() {
   return (
     <>
       <Nav />
+      <BackgroundMusic />
       <main>
         <Hero />
         <Invitation />

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Caveat, Instrument_Serif, Pinyon_Script, Roboto_Mono } from "next/font/google";
+import { Ballet, Caveat, Instrument_Serif, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
 // Stand-in for Burgues Script. To use the real font, drop the file in app/fonts/ and replace with:
 // localFont({ src: "./fonts/BurguesScript.woff2", variable: "--font-script", display: "swap" })
-const script = Pinyon_Script({
+const script = Ballet({
   variable: "--font-script",
   subsets: ["latin"],
   weight: "400",
@@ -15,6 +15,7 @@ const display = Instrument_Serif({
   variable: "--font-display",
   subsets: ["latin"],
   weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 

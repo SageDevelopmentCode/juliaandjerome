@@ -19,7 +19,7 @@ export default function UntilIDo() {
         />
         <div className="absolute inset-0 bg-olive/15" />
         <Reveal className="absolute inset-x-0 top-[24%] flex flex-col items-center px-4 text-ivory">
-          <h2 className="text-shadow-photo flex items-baseline gap-[0.3em] text-[clamp(1.6rem,3.6vw,2.6rem)]">
+          <h2 className="text-until text-shadow-photo flex items-baseline gap-[0.3em]">
             <span className="font-display">Until we say</span>
             <span className="font-script text-[1.35em]">“I do”</span>
           </h2>

@@ -6,22 +6,22 @@ export default function Itinerary() {
   return (
     <BackdropPhoto
       src={images.itineraryBg}
-      position="50% 30%"
+      position="58% 22%"
       className="relative overflow-hidden"
     >
-      <section aria-labelledby="itinerary-title" className="relative px-0 pb-10 pt-[18vw] md:pb-14 md:pt-[14vw]">
+      <section aria-labelledby="itinerary-title" className="relative px-0 pb-10 pt-[48vw] md:pb-14 md:pt-[28vw]">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/25" />
 
         <div className="relative mx-auto max-w-[1440px]">
           <div className="flex items-end justify-between px-2 text-ivory">
-            <p className="font-display text-shadow-photo text-[clamp(1rem,2.2vw,1.6rem)]">{itinerary.month}</p>
+            <p className="font-display text-itinerary-meta text-shadow-photo">{itinerary.month}</p>
             <h2
               id="itinerary-title"
-              className="font-display text-shadow-photo text-[clamp(2.2rem,4.6vw,3.6rem)]"
+              className="font-display text-itinerary-title text-shadow-photo"
             >
               Itinerary
             </h2>
-            <p className="font-display text-shadow-photo text-[clamp(1rem,2.2vw,1.6rem)]">{itinerary.year}</p>
+            <p className="font-display text-itinerary-meta text-shadow-photo">{itinerary.year}</p>
           </div>
 
           <Reveal className="mt-2">
@@ -30,7 +30,7 @@ export default function Itinerary() {
               {itinerary.days.map((d) => (
                 <div
                   key={d.day}
-                  className="border-r border-ivory/70 bg-black/15 py-2.5 text-center font-mono text-[0.72rem] uppercase tracking-[0.1em] text-ivory backdrop-blur-[2px] last:border-r-0"
+                  className="text-body-sm border-r border-ivory/70 bg-black/15 py-2.5 text-center font-mono uppercase tracking-[0.1em] text-ivory backdrop-blur-[2px] last:border-r-0"
                 >
                   {d.day}
                 </div>
@@ -38,7 +38,7 @@ export default function Itinerary() {
               {itinerary.days.map((d) => (
                 <div
                   key={d.date}
-                  className="min-h-[9.5rem] border-r border-t border-olive/60 bg-ivory px-3 py-3 font-mono text-[0.78rem] text-[#1f1d1a] last:border-r-0"
+                  className="text-body-sm min-h-[9.5rem] border-r border-t border-olive/60 bg-ivory px-3 py-3 font-mono text-[#1f1d1a] last:border-r-0"
                 >
                   <p className="font-bold">{d.date}</p>
                   <ul className="ml-4 mt-5 list-disc space-y-0.5 leading-snug">

@@ -43,7 +43,7 @@ export default function ItalyMap() {
             <InitialTitle
               initial="M"
               rest="ore to see in Italy"
-              className="text-[clamp(2.1rem,5.3vw,4.4rem)]"
+              className="text-section"
               initialClassName="text-[1.8em]"
             />
           }
