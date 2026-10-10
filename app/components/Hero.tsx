@@ -1,20 +1,22 @@
-import Image from "next/image";
 import Reveal from "@/app/components/Reveal";
 import { ScriptInitialWord } from "@/app/components/ui";
 import { couple, hero, images } from "@/app/data/content";
 
 export default function Hero() {
   return (
-    <section id="top" className="relative h-[100svh] min-h-[560px] overflow-hidden bg-olive">
-      <Image
-        src={images.hero}
-        alt="Julia and Jerome waving from a wooden boat on Lake Como"
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-[66%_60%] md:object-[50%_60%]"
+    <section id="top" className="relative h-[100svh] min-h-[560px] overflow-hidden bg-black">
+      <video
+        className="pointer-events-none absolute top-1/2 left-1/2 h-full w-[177.78svh] min-w-full max-w-none -translate-x-1/2 -translate-y-1/2 object-cover object-center"
+        src={images.heroVideo}
+        poster={images.heroPoster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label="Julia and Jerome waving from a wooden boat on Lake Como"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-olive/35 via-olive/10 to-olive/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-olive/25 via-olive/5 to-olive/20" />
 
       <div className="relative flex h-full flex-col items-center text-center text-ivory">
         <div className="flex flex-1 flex-col items-center justify-center px-4 sm:pt-[22svh] md:pt-[24svh] sm:justify-start">

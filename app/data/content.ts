@@ -29,6 +29,8 @@ export const images = {
   monogram: web("monogram.png"),
   villaSketch: web("villa-sketch.svg"),
   hero: web("hero-boat.jpg"),
+  heroVideo: web("hero-film.mp4"),
+  heroPoster: web("hero-film-poster.jpg"),
   inviteBg: web("invite-lake.jpg"),
   video: web("super8.mp4"),
   videoPoster: web("super8-poster.jpg"),
